@@ -1,16 +1,15 @@
 # Django Tutorial Part 1: Create the Polls App
 
 
-T
-## Start the django Polls tutorial
+This is the 1st part of the tutorial. Before you start make sure you reade the [intro](README.md)
 
-When adding new code, like new apps, features, bugfixes etc, you always have to keep the master stable. Deployment just pushes master to production, so as long as the master is stable, you can experiment and develop freely, and still safely deploy.
+## Start the Django Polls Tutorial
 
-So we start with a new branch.
+When you add new code, like new apps, features, bugfixes etc, use a separate branch, and keep the master branch stable. Then, to deploy you just push master to production. As long as the master is stable, you can experiment and develop freely on other branches, and safely deploy with the master branch.
 
-**Make sure you are in the site_repo directory.**
+So, to add the polls app start with a new branch.
 
-Then:
+**Make sure you are in the `site_repo` directory:**
 
 	you@dev-machine: git branch polls-app
 	you@dev-machine: git checkout polls-app
@@ -35,19 +34,34 @@ Django created the app directory, polls.
 The app files:
 
 	you@dev-machine: ls polls
-	
-These are the files and directories django just created  (based on the default app template):
-	
 	admin.py  __init__.py  migrations  models.py  tests.py  views.py
 	
-Let's add the files, and commit:
+These are the files and directories django just created  (based on the default app template).	
+
+	
+Add the files, and commit:
 
 	you@dev-machine: git add .
 	you@dev-machine: git commit -m 'added polls app'
 	
+Now we have to tell django to use this app. It's not enough to create the app directory, we also have to declate it in the settings file:
 
-    
-Now that the basic app files are in place, we can start to code the app.   
+	you@dev-machine: nano settings.py
+	
+Then look for the `INSTALLED_APPS` key, and edit, so it will look like this:
+
+	INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'site_repo.home',
+    'site_repo.polls'
+    )
+   
+Now that the basic app files are in place, we can start to write the app.   
 Edit the app models:
 
 	you@dev-machine: nano polls/models.py
@@ -66,29 +80,11 @@ After the edit, the file should look like this:
     	votes = models.IntegerField(default=0)
 
 
-*Note: the django "models" are the django abstraction of the underlying database tables. When you code, you interact with models, and then the django framework translates the models methods to actual database interactions*
+The django "models" are the django abstraction of the underlying database tables, with additional functionality (provided by django). A model is a python class that django uses to access the database table. When you code, you interact with models, and then django access the database and translates some of the model's methods to actual database interactions.*
 
-We have to tell django to use this app. It's not enough to create the app directory, we also have to declate it in the settings file:
-
-	you@dev-machine: nano settings.py
-	
-Then look for the INSTALLED_APPS key, and edit so it will look like this:
-
-	INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'site_repo.home',
-    'site_repo.polls'
-)
-	
-	
-The app "models" are not real database tables, but an abstraction layer that is easier to code with, django needs to create the actual database tables.    
-But before django changes things in the database, we must tell django that we have changed something in the models.    
-In the site_repo directory:
+Since the app's models are **not** database tables, then once you define the model class, django needs to create the actual database table. But before django changes things in the database, we must tell django that we have updated something in the models files. 
+   
+In the `site_repo` directory:
 
 	you@dev-machine: cd ..
 	you@dev-machine: ./manage.py makemigrations polls
@@ -120,12 +116,12 @@ See what happened:
 	#	polls/migrations/0001_initial.py
 
 	
-Note the changes to the two tracked files: settings.py, and the polls/models.py.
+Note the changes to the two tracked files: `settings.py`, and the `polls/models.py`.
 
-And there is a new file: polls/migrations/0001_initial.py. 
-Django added a migrations file, with specific instructions of how to change the database, so it matches the models. 
+And there is a new file: `polls/migrations/0001_initial.py`. 
+Django added a migrations file, with specific instructions of how to change the database to matche the models. 
 
-It's time to tell django to apply these changes to the database. Django knows how to translate the migrations to SQL, and change the real database behind the app:
+It's time to tell django to apply these changes to the database. Django handles the SQL schema updates to the database:
 
 	you@dev-machine: cd ..
 	you@dev-machine: ./manage.py migrate
@@ -141,7 +137,7 @@ It's time to tell django to apply these changes to the database. Django knows ho
 	  Rendering model states... DONE
 	  Applying polls.0001_initial... OK
 	  
-OK! Django just applied the 0001_initial migration to the database.
+OK! Django just applied the `0001_initial` migration to the database.
 Check it in the database shell:
 
 	you@dev-machine: mysql -uroot -p
@@ -172,9 +168,10 @@ Check it in the database shell:
 	+----------------------------+
 	12 rows in set (0.00 sec)
 
-The datbase contains (for now) 12 tables. 10 tables are used by django, and the last two tables are the polls app tables, which django just created with the migration file.    
-By default, django names the tables with "app-name_model-name".    
-To see the tables fields:
+The database contains (for now) 12 tables. 10 tables are used by django, and the last two tables are the new polls app tables.
+
+By default, django names the tables as "app-name_model-name".    
+To see the tables' fields:
 
 
 	mysql > describe polls_question;
@@ -204,19 +201,19 @@ To see the tables fields:
 	
 
 
-Django converted the models definitions, in python, to actual database tables and fields, created with SQL.    
-By default, django adds an "id" auto increment field to each table.
+The django migration converted the models' definitions in python to actual database tables and fields.    
+By default, django adds an "id" auto_increment field to each table.
 
-*Note: The question_id field in the polls_choices table is a MUL index, a multiple index, which django will use for the "many" side of the one-to-many relation question-choices (see the polls/models.py ForeignKey field in the choices model)*
+*Note: The question_id field in the polls_choices table is a MUL index, a multiple index, which django will use for the "many" side of the one-to-many relation question-choices (see the `polls/models.py` ForeignKey field in the choices model)*
 
 
-Most of the time you will work with django models, but once in a while you will need to use direct sql to run some complex queries or improve preformance. So for now, exit MySQL.
+Most of the time you will work with django models, but once in a while you will need to use direct sql to run some complex queries or improve preformance. For now, exit MySQL.
 
 
 **Interim Summary:**
 
-1. You created the polls up
-2. You added the polls app to the site INSTALLED_APPS, in settings.py
+1. You created the polls app
+2. You added the polls app to the site `INSTALLED_APPS`, in `settings.py`
 3. You added polls models
 4.  You created a migration
 5.  You applied the migration to the **local** database
