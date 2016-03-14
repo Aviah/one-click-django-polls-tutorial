@@ -251,7 +251,7 @@ And push:
 	Compressing objects: 100% (11/11), done.
 	Writing objects: 100% (11/11), 1.69 KiB, done.
 	Total 11 (delta 3), reused 0 (delta 0)
-	To django@92.53.193.10:/home/django/site_repo.git
+	To django@45.33.93.118:/home/django/site_repo.git
 	 * [new branch]      polls-app -> polls-app
 	 
 	 

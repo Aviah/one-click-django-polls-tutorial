@@ -34,7 +34,7 @@ But since an object in django is of course much more than a "row", a queryset it
 
 Like any other python list (it's not a real list, but similar to one), you can loop through the queryset, the list of objects, use list comprehentions, etc. 
 
-The confusing issue with Querysets is that a queryset object has more than one state: when you define a queryset, it just has the criteria for the sql query, like objects.filter(field1='foo',field2='baz). The queryset is defined, but without results - yet. Django will not run the query until it actually need it. Only when the code start to refrence items for the query - loop the query, access the first item in the queryset, etc - django runs it. And when used incorrectly, the same queryset may run more than once. 
+The confusing issue with Querysets is that a queryset object has more than one state: when you define a queryset, it just has the criteria for the sql query, like objects.filter(field1='foo',field2='baz). The queryset is defined, but without results - yet. Django will not run the query until it actually need it. Only when the code start to reference items for the query - loop the query, access the first item in the queryset, etc - django runs it. And when used incorrectly, the same queryset may run more than once. 
 
 ## Views
 
@@ -66,7 +66,7 @@ Important to read:
 
 Templates helps the view to generate a response: once the view has the finalized data for the response, it can pass to django the data as a dictionary, and a template. Django renders the template, and sends it as the response.
 
-Templates has some logic, with django templates language, templates tags, and you can add your own tags and filters. It's not always clear where to put the logic: in the template, or in Python. This is a prefrence issue: sometimes it's easier to add things right in the template, sometimes template logic becomes complicated and it's easier to do it in Python. If some logic, rules or calculation repeats throughout the django app, or requires a lot of parameters and lines of code, better to put in Python.
+Templates has some logic, with django templates language, templates tags, and you can add your own tags and filters. It's not always clear where to put the logic: in the template, or in Python. This is a preference issue: sometimes it's easier to add things right in the template, sometimes template logic becomes complicated and it's easier to do it in Python. If some logic, rules or calculation repeats throughout the django app, or requires a lot of parameters and lines of code, better to put in Python.
 
 The common pattern is to define a base template, the general structure of the page , the refernces, and then extend this template, so that each template defines just the specific function the view uses - the rest comes from the base template. If the application uses login and public areas, defince a base template for login pages, and another one for public pages. Both can extend the global base template.
 

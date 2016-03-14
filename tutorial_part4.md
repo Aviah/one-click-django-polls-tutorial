@@ -162,10 +162,12 @@ Since we changed only Python code, a simple deployment will do:
 	[django@45.33.93.118] run: git reset --hard
 	[django@45.33.93.118] out: HEAD is now at 172af59 polls base views and urls
 	
-	[django@45.33.93.118] run: rm ~/my-site/site_config/*.py
-	[django@45.33.93.118] run: touch ~/my-site/site_config/__init__.py
-	[django@45.33.93.118] run: cp ~/my-site/site_repo/settings_production.py ~/my-site/site_config/
-	[django@45.33.93.118] run: touch ~/my-site/site_repo/wsgi.py
+	[django@45.33.93.118] run: mv secrets.py secrets.txt
+	[django@45.33.93.118] run: rm *.py
+	[django@45.33.93.118] run: mv secrets.txt secrets.py
+	[django@45.33.93.118] run: touch __init__.py
+	[django@45.33.93.118] run: cp ~/my_site/site_repo/settings_production.py ~/my_site/site_config/
+	[django@45.33.93.118] run: touch ~/my_site/site_repo/wsgi.py
 	
 	Done.
 	Disconnecting from django@45.33.93.118... done. 
