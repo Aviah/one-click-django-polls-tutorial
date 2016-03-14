@@ -4,9 +4,9 @@
 
 ## The Tutorial
 
-This tutorial implements most of the django official polls tutorial, with one significant addtion: deployment. You will get a real feel how to build a a django and deploy it, using git and fabric.
+This tutorial implements most of the django official polls tutorial, with one significant addition: deployment. You will get a real feel how to build a django project and deploy it, using git and fabric.
 
-When you finish, the polls app will run on your own production server, at `www.yourdomain.com/polls`.
+When you finish the tutorial, the polls app will run on your own production server, at `www.yourdomain.com/polls`.
 
 To run this tutorial, you will need the one-click-django-server and the matching development local website. If you haven't installed it already, it's easy, the setup scripts auto-install (almost) everything:    
 
@@ -38,7 +38,7 @@ So your job as a django developer is to write python functions that respond to U
 
 ## Table of Contents
 
-Start with the [Playground](playground.md) , which lets you play and experiment the environment.
+Start with the [Playground](https://github.com/Aviah/one-click-django-docs/blob/master/playground.md) , which lets you play and experiment the environment.
 
 [Part 1: Create the Polls App](tutorial_part1.md)    
 [Part 2: The Django Admin](tutorial_part2.md)    
@@ -46,8 +46,8 @@ Start with the [Playground](playground.md) , which lets you play and experiment 
 [Part 4: First Deployment](tutorial_part4.md)    
 [Part 5: Templates](tutorial_part5.md)    
 [Part 6: Forms](tutorial_part6.md)    
-[Part 7: A Brief Overview of Django's Base Components](tutorial_part6.md)    
-[Part 8: What Next and some Resources](tutorial_part8.md)
+[Part 7: A Brief Overview of Django's Base Components](tutorial_part7.md)    
+[Part 8: What's Next and some Resources](tutorial_part8.md)
 
 
 Support this project with my affiliate link| 
