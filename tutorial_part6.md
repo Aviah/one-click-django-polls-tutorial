@@ -18,7 +18,7 @@ When you use forms, the browser sends the form's data as additional information.
 
 Feature | GET | POST
 -----|-----|------ 
-URL|www.yourdomain.com/polls?arg1=foo&arg2=baz|www.yourdomain.com/polls
+URL|`www.yourdomain.com/polls?arg1=foo&arg2=baz`|`www.yourdomain.com/polls`
 Form arguments are sent| In the URL | In the HTTP request
 Available to the django view with | request.GET | request.POST
 Form is translated by django to| Python dictionary | Python dictionary
@@ -122,17 +122,30 @@ To decide, the view tries `request.POST['choice']`. If it doesn't exist, then th
 Otherwise, it's a sbmitted form: the vote is incremented and saved, and the view redirects to the results url.    
 
 
+## Django Forms
+
+The tutorial example is simple, and it just uses `request.POST`, as is.     
+The more common way - and more robust way - to use forms, is with a django `Form`. 
+
+The django `Form` is a special django class that handles almost everything you need from a form. It has methods to clean the data, to provide the error messages, select the correct HTML widget for each form field, save the submitted data to the database, etc.
+
+So instead of dealing with `request.POST`, you write a `Form` class, define this form fields (similar to the way you define the models fields), and then pass the `request.POST` data to this form - and let the Form do the rest.     
+See part 7 of this tutorial about django components.
+
+For a complete coverage of Forms in django, see the django docs.  
+
+
 ## Redirect after successful submit
 
 The results url is found with `reverse`, which takes a named url, and returns the url's path:
 
 	 reverese('polls:results',1)
 	 
-will return:
+Returns:
 
 	 /polls/2/results    
 
-Again, using reverse makes it easy to change the URLs path in the future, and it a better and cleaner way to manage urls for django development.
+Again, using `reverse` makes it easy to change the URLs path in the future, and it is a better and cleaner way to manage urls for a django project.
 
 *Note: the **choice_set** is a method that django adds automaticaly for one-to-many relations, as an easy way for the one side object to get the related many side objects. Django knows about the questions-choices one-many relation from the ForeignKey in the polls/Choices model.* 
 
