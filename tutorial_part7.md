@@ -41,19 +41,19 @@ The django ORM (object-relational-mapping) can take you a long way with aggregat
 
 
 ## Forms
-A django `Form` is also a python class, with fields, not unlike to models. But where the model's primary job is to face the database, the form main task is to face the user input.    
-While the model's fields and behaviour are database oriented, the form's fields have properties, widgets and behaviour required for HTML forms and **user input**. 
+A django `Form` is also a python class, with fields, not unlike models. But where the model's primary job is to face the database, the form's main task is to face the user input.    
+While the model's fields and behaviour are database oriented, the form's fields have properties, widgets and behaviour that is required for HTML forms and **user input**. 
 
 The `ModelForm` is the bridge between the django models and the django forms. The `ModelForm` connects the form's fields to the model's fields, and let you easily get and save data in one step, from the user to the database. 
 
-When the `ModelForm` doesn't fit, you will have to connect the form and the model in your code, to get the data from the user in the form, and pass it to the model.
+When the `ModelForm` doesn't fit, you will have to manually connect the form and the model, get the user's submiited data in the form, and save it to the model.
 
 
 ## Querysets
 
 If a django `Model` is the django abstraction to a database table, then the `Queryset` is a python class that abstracts a query. 
 
-A `Queryset` is a list-like python class, with a list of rows that the database returned for a given query criteria. However, in django, you get "object" that is much more than a "row". A queryset item is typically a complete python object with both data and functionality. 
+A `Queryset` is a list-like python class, with a list of rows that the database returned for a given query criteria. However, in django, you get an "object" that is much more than a "row". A queryset item is typically a complete python object with both data and functionality. 
 
 Like any other python list (it's not a real list, but similar to one), you can loop through the queryset and use list comprehentions. 
 
@@ -62,7 +62,7 @@ The confusing issue with `Queryset` is that a queryset object has more than one 
 * Without data: When you define a queryset, it has only the criteria for the SQL query, like `objects.filter(field1='foo',field2='baz)`. The queryset is defined, but has no data - yet. 
 * With data: After django runs the underlying SQL query and populate query, it has the data. 
 
-Django will not run the query to the database until it actually needs it. Only when the application code starts to reference items of the `Queryset`, e.g. to loop the results or access the first item, django runs the SQL and gets the results, and populates the `Queryset`. And when used incorrectly, the same queryset may run more than once. 
+Django will not run the query to the database until it actually needs it. Only when the application code starts to reference items of the `Queryset`, e.g. to loop the results or access the first item, django runs the SQL and gets the results, and populates the `Queryset`. When used incorrectly, the same queryset may run more than once. 
 
 ## Views
 
