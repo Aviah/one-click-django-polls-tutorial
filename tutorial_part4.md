@@ -29,8 +29,8 @@ Ubuntu desktop:
 	
 		
 	
-If you use the local apache and Nginx often, you don't have to restart. To reload the new django code to mod_wsgi just touch the `site_repo/wsgi.py` file. If Nginx configs didn't change there is no need to reload or restart it.    
-The alias to reload the django code is: `$ site-reload`
+*Note:If you use the local apache and Nginx often, you don't have to restart. To reload the new django code to mod_wsgi just touch the `site_repo/wsgi.py` file. If Nginx configs didn't change there is no need to reload or restart it.    
+The alias to reload the django code is: `$ site-reload`*
 
 Browse to the local site at **127.0.0.1**.
 This address  does **not** use :8000, which is used by the django development server.
@@ -107,7 +107,8 @@ Status:
 	#
 	nothing to commit (working directory clean)
 	
-After the merge, the local repository is ahead of the main project repository:
+After the merge, the local repository is ahead of the main project repository.
+Push the updates:
 
 	you@dev-machine: git push
 	
@@ -172,10 +173,10 @@ The fabric log tells us that:
 3. The `settings_production.py` was re-copied to site_config
 4. Mod_wsgi should reload the new code, after the `touch wsgi.py`
 
-*Reminder: `settings_production.py` is maintained in the repo, but the actual file loaded to mod_wsgi is the one in the site_config directory, **outside** the repo. This enables to keep all the settings files in the repo, and use only one of them in each environment. Fabric also keeps the secrets.py file. See the [Project Reference](https://github.com/Aviah/one-click-django-docs)*
+Reminder: `settings_production.py` is maintained **in the repo**, but the actual file loaded to mod_wsgi is the one in the `site_config` directory, **outside** the repo. So you keep all the settings files in the repo, and use only one of them in each environment. Fabric also keeps the secrets.py file. See the [Project Reference](https://github.com/Aviah/one-click-django-docs)
 
 Deployment seems to work. Time to check the website. 
-Go the website with your browser, at yourdomain.com   
+Go to the website with your browser, at yourdomain.com.   
 Browse to the new polls app, at `www.yourdomain.com/polls`
 
 Ooops! 500 Serrver Error?    
@@ -194,7 +195,7 @@ And take a look at the logs:
 
 	you@my-django-server: tail-logs
 	
-You should now see the tail of the 4 following logs:
+You should now see the tail of the following logs:
 
 1. The django `main.log`, that logs everything you log in code with `logging.getLogger('main').info` or higher logging level
 2. The django `debug.log`, that logs everything you log in code with `logging.debug`, and only in dev environment
@@ -325,7 +326,7 @@ Obviously there is nothing to see, since there are no questions in the **server'
 Go to the admin, on the server, at `www.yourdomain.com/admin`.    
 Login, and add some questions, similarly to how you entered questions localy.
 
-*Note: use the server django superuser name and passowrd you provided when installing one-click-django-server.*
+*Note: use the server django superuser's username & passowrd that you provided when installing one-click-django-server.*
 
 After adding a question or two, go to `www.yourdomain.com/polls`.    
 And here are your questions.
