@@ -1,17 +1,17 @@
 # Django Tutorial Part 3: Views & URLs
 
-This is the 3rd part of using the official django tutorial in the one-click-django environment.    
+This is the 3rd part of the tutorial.    
 Make sure you finished [Part 2](tutorial_part2.md)
 
 **Quick reminder**: 
 
-In parts 1 & 2 you have created the polls app, and added some initial data with the django admin.
+In parts 1 & 2 you created the polls app, added models and database migrations, and used the admin to add some initial data.
 
-Now we need the views, the django functions that render the webpages and let you browse to the app.
+Now we will add the views, the django functions that render the webpages, and thus let a user actually browse to the app.
 
 
 ## Views
-Form the site_repo directory:
+Form the `site_repo` directory:
 
 	you@dev-machine: nano polls/views.py
 	
@@ -39,41 +39,48 @@ After the edit, the file should look like this:
 
 	
 	
-The polls app has 4 views: index,detail,results,and vote. Each view will render a different web page.
+The polls app has 4 views: 
 
-Of course these are not real HTML files that the web server sends to the browser, but rather python functions. A django view function dynamicaly creates the web page (in django: an HttpResponse object), which django handles and passes to the webserver via mod_wsgi.
+* index view
+* detail view
+* results view
+* vote view
+ 
+Each view renders a different web page.
 
-Note that each view accepts a "request" argument, which is a django HttpRequest object. This is the python class that django builds from the HTTP request it got from the server. The HttpRequest object has a lot of data about the actual request, and the view uses this data to render the response page.
+Of course, these are not real HTML files, but rather python functions that create the HTML (a view can also create a json response). A django view function dynamicaly creates the web page - in django it's an `HttpResponse` object - which django handles to the webserver via mod_wsgi.
 
-What is these views role in the django workflow? The steps to run these views is as follows:
+Note that each view accepts a `request` argument, which is a django `HttpRequest` object. This is the python class that django builds from the HTTP request it got from the server. The `HttpRequest` object has a lot of data about the actual request, and the view function uses this data to render the response.
+
+What is the views role in the django workflow?    
+These are the steps that django runs:
 
 1. Django gets the URL from the webserver
 2. Django decides which view is responsible to create a page for this URL, and calls this view
-3. The called view runs, and returns an HttpResponse object to django.
+3. The called view runs, and returns an `HttpResponse` object to django.
 4. Django returns the final response to mod_wsgi
 5. mod_wsgi sends it to Apache, Apache to Nginx
 6. Nginx, which is the server that faces the internet, sends the response to the user's browser. 
-7. 
+ 
 
-This is exactly the nice thing in a web framework, and django in particular: Your main job is, essentialy,  to define URLS and write the functions that respond to those urls. Then (almost) everything else is handled by the framework.
+This flow is the nice thing in a web framework, and django in particular:  Your main job as the developeris, essentialy, is to define URLS and write the functions that respond to those urls. Then, (almost) everything else is handled by the framework.
 
-*Note: When the client asks for a real file (image, css file, javascript file), Nginx does **not** need to go to Apache, and directly sends the file. This is much faster.*   
+*Note: When the client asks for a real file (image, css file, javascript file), Nginx does not need to go to Apache and mod_wsgi. Rather, Nginx  sends the file directly.*  
 
-
-*Note: Regarding Apache & Nginx. Once Apache handled the response to Nginx, the Apache-mod-wsgi-django thread is free to run another request, since Nginx now takes care of the response and sending it via the actual connection to the client.    
-The heavy lifting is the code that runs in django-mod_wsgi-Apache. This is why it's better to free resources ASAP, let django-mod_wsgi-Apache to deliver the response localy, to Nginx, rather than wait until Apache-mod_wsgi deliveres it to the client over the web. Nginx is much better handling the the clients, and the delivery over slow connections, disconnections etc, while django-mod_wsgi threads are free to run the next request*
+Why Apache and Nginx? Once Apache handles the response to Nginx, the Apache-mod-wsgi-django thread is free to run another request. When Nginx gets the response (that django prepared), it  takes care to send it to the client.    
+The heavy lifting is the code that runs in django: The idea is to free the Apache-mod-wsgi resources ASAP. After django finishes with the request, Apache delivers it to Nginx **localy** and is immediately ready for the next request. Nginx will now handle the delivery over the internet, with the waits, slow connections, disconnections etc. Meanwhile, Apache-mod-wsgi-django can run another request.
+ 
 
 
 ## URLs
 
-To recap, the flow of request-response is:
-
-URL to django >> django calls the correct View >> the view returns an HttpResponse to django >> django to mod_wsgi >> to Apache >> to Nginx >> Internet >> User's Browser.
+To recap, the flow of request-response is: URL to django >> django calls the correct View >> the view returns an HttpResponse to django >> django to mod_wsgi >> to Apache >> to Nginx >> Internet >> User's Browser.
 
 We already have the **views** in place.
 
-Now we have to define **urls**, to tell django how to decide which view to call for each URL.    
-We will add a urls.py file for the polls app (note that each app can have it's own urls.py file):
+To tell django how to decide which view to call for each URL, we define the **urls** module. Each app can have it's own urls. 
+
+Add a `urls.py` file for the polls app:
 
 	you@dev-machine: nano polls/urls.py
 	
@@ -97,14 +104,15 @@ After the edit, the file should look like this:
 
 	
 
-The urls defenitions are maybe the most confusing part of django. In a nutshell, djago has a list of possible urls, and a specific view to call for each url.
+The urls defenitions are, maybe, the most confusing part of django. In a nutshell, djago has a list of possible urls, and a specific view to call for each.    
 The confusing part is that django matches urls with regex, and it also extracts arguments from the url and pass these argument to the view (the view is a function, so it accepts arguments).
 
-**But the basic idea is simple: django gets the URL that the user requested, match it to one of the urls in the list, and call the correct view for this matched url.**
+**However, the basic idea is simple: django gets the URL, matches it to one of the urls` in the urls list, and calls the correct view for the first matched url.**
 
-By default, django looks only at the main urls.py file, at site_repo/urls.py).   
-So we need to tell django to try to match urls also from poll/urls.py.    
+By default, when django tries to match a URL it looks only at the main project's `urls.py` file, at `site_repo/urls.py`. You have to explicitly tell django to look for additional apps' urls.
 
+
+Add the `poll/urls.py` to the list of urls that django uses.   
 From the site_repo directory, edit the **main** urls.py file:
 
 	you@dev-machine: nano urls.py
@@ -132,7 +140,8 @@ Browse To | You Should See
 127.0.0.1:8000/polls/42/results |  You're looking at the results of question 42.
 127.0.0.1:8000/polls/42/vote |  You're voting on question 42.
 
-It's clear that the only first view is actually using the database. In the case of the other views, django just parses the "42" argument from the url, passes it to the view, and the view renders the response with the argument.
+It's clear that only the first view is actually using the database.    
+In the other views, django just parses the "42" argument from the url, passes it to the view, and the view renders the response with this argument.
 
 You have successfuly added views and urls to the polls app:
 
@@ -161,7 +170,7 @@ Commit:
 Great Work!
 	
 	
-It seems that you have something to see on a real website, so the next tutorial will be the first deployment.    
+It seems that you have something to see on a real website, so the next part of the tutorial will be the first deployment.    
 Continue to [Part 4: First Deployment](tutorial_part4.md)
 
 Support this project with my affiliate link| 
