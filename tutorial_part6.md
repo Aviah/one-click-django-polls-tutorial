@@ -24,7 +24,7 @@ Available to the django view with | request.GET | request.POST
 Form is translated by django to| Python dictionary | Python dictionary
 
 
-Any view can accept forms, and any view that accepts forms can use the python dictionary that django creates.
+Any view can accept forms, and any view that accepts forms can use the form's data via the python dictionary that django creates.
 
 *Note: django's Class Based generic Views are really great when it comes to forms. The generic views hook everything together, and provide a ready and cleaned data*
 
@@ -68,16 +68,17 @@ After you edit the file, it should look like this:
 
 Quite a few new things here:
 
-1. The HTML form **action**: The target url when the user submits the form, goes to the `polls:vote` url. Django uses the url's name, to provide the actual url path.
+1. The HTML form **action**: The target url when the user submits the form, goes to the `polls:vote` url. Django uses the url's name, to provide the actual url's path.
 2. The HTML form **method** is "post", so the view will read the form's data in `request.POST`.
 3. A loop that adds a radio button for each choice
 4. A `submit` button.
-5. Django renders the form fields, but the you define the `form` tag, and the `submit` button.
+5. Django renders the form fields, but you define the `form` tag, and the `submit` button.
 
 
 ## View that Accepts a Form
 
-Add the view code that will handle the (truth) form.    
+Add the view code that will handle the (truth) form.
+    
 Edit the views file:
 
 	you@dev-machine: nano polls/views.py
@@ -111,7 +112,7 @@ This is the votes view:
         	# user hits the Back button.
         	return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
 
-The first step is to check if the question exists at all, otherwise the view raises 404.
+The view starts by checking if the question exists at all, otherwise it raises 404.
 
 Then, when a form view accepts a request, it has to decide if:
 
@@ -147,7 +148,7 @@ Returns:
 
 Again, using `reverse` makes it easy to change the URLs path in the future, and it is a better and cleaner way to manage urls for a django project.
 
-*Note: the **choice_set** is a method that django adds automaticaly for one-to-many relations, as an easy way for the one side object to get the related many side objects. Django knows about the questions-choices one-many relation from the ForeignKey in the polls/Choices model.* 
+*Note: the `choice_set` is a method that django adds automaticaly for one-to-many relations, as an easy way for the one side object to get the related objects from the many side. Django knows about the questions-choices one-to-many relation from the `ForeignKey` field in the `Choice` model.* 
 
 To see the results, edit the results view as well, so it looks like this:
 
