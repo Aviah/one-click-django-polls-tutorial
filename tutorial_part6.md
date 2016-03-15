@@ -133,7 +133,7 @@ The django `Form` is a special django class that handles almost everything you n
 So instead of dealing with `request.POST`, you write a `Form` class, define this form fields (similar to the way you define the models fields), and then pass the `request.POST` data to this form - and let the Form do the rest.     
 See part 7 of this tutorial about django components.
 
-For a complete coverage of Forms in django, see the django docs.  
+Django forms, and the integration of forms with models, is one of the most powerful and feature-rich parts of django. For a complete coverage of this topic, see the django docs.
 
 
 ## Redirect after successful submit
@@ -240,7 +240,9 @@ Finally, cast your vote at your site, at `www.yourdomain.com/polls`!
 
 Great work!
 
-You added a form view, and **now you have a working polls web application on  a real website. Congrats!**
+You added a form view.
+
+**Now you have a working polls web application on a real website. Congrats!**
 
 This is the last step of the coding in this tutorial.
 The next part is a recap of the "moving parts" of the framework, the common components that you work with as a django developer.    
