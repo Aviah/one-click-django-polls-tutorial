@@ -72,7 +72,7 @@ Quite a few new things here:
 2. The HTML form **method** is "post", so the view will read the form's data in `request.POST`.
 3. A loop that adds a radio button for each choice
 4. A `submit` button.
-5. Django renders the form fields, but you define the `form` tag, and the `submit` button.
+5. Django renders the form fields, but you have to define the `form` tag, and the `submit` button.
 
 
 ## View that Accepts a Form
@@ -244,7 +244,7 @@ You added a form view.
 
 **Now you have a working polls web application on a real website. Congrats!**
 
-This is the last step of the coding in this tutorial.
+This is the last coding step in this tutorial.
 The next part is a recap of the "moving parts" of the framework, the common components that you work with as a django developer.    
 Continue to [Part 7: A Brief Overview of Django's Base Components](tutorial_part7.md)
 
