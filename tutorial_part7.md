@@ -1,40 +1,68 @@
 # Django Tutorial Part 7: A Brief Overview of Django's Base Components
-This is the 7th part of using the official django tutorial in the one-click-django environment.    
+
+This is part 7 of the tutorial.    
 Make sure you finished [Part 6](tutorial_part6.md)
 
-## Django Components
 
-Django is a mature and feature rich framework, and if you need to do something, chances are that this functionality is already available in django.
+**Quick reminder**: 
 
-It helps to have a good grasp of the base components, so here is a quick recapץ
+In parts 1-6 you created and deployed the polls app.
+
+This part is not a coding tutorial, but rather a summary of the framework main components. 
+
+The django "essense" is a set of core components, that the django developer uses, subclasses, extends and customize. It's important to have a good grasp of these components, and their roles in the django application.
+
+So this part is a quick recap.
+ 
+[Models](#models)    
+[Forms](#forms)    
+[Querysets](#queryset)    
+[Views](#views)    
+[Templates](#templates)     
+[URL Resolvers](#url-resolvers)    
+[Context Processors](#context-processors)    
+[Django Auth](#django-auth)    
+[Middleware](#middleware)    
+[Signals](#signals)    
+[Cache](#cache)    
+
 
 ## Models
 
-A django "Model" is a python class. It's the database facing part of django. You can think of a model as a "smart table", it has fields (a field is also a python class), and it can run a lot of code before sending something to the database, and after getting the data back, to prepare it for the django application. The models are defined with a python Metaclass: you provide the definition, and django creates your Model class in runtime.
+A django `Model` is a python class. It's the database facing part of django.     
+You can think of a model as a "smart table": it has fields (a field is also a python class), it runs a lot of code before it sends something to the database, and after getting the data back.
 
-The model provides the data as an "object": essentially, an object is a data row, encapsulated with python methods and properties.
+Django runs the models with a python metaclass: you provide the definitions, and django's metaclass creates your Model class in runtime.
 
-Models are a great and easy way to work with data: you get both the data, and the functionality to manipulate it, in one python object. 
+Models are a great and easy way to work with data: you get both the data and the functionality to manipulate it, in one python object. The model provides the data as an "object": essentially, a model object is a data row, encapsulated with python methods and properties.
 
-The limits of the models start to appear when you work with large sets of data. Sets are the task that SQL was designed to solve, while object oriented approach is somewhat limited in that regard.    
+The limits of the models start to appear when you work with large sets of data. Sets are the task that SQL was designed to solve, while object oriented approach is somewhat limited with large sets.    
 The django ORM (object-relational-mapping) can take you a long way with aggregates and sets, but it has it's limit. Luckily, django provides easy access to raw sql, when you need it.
 
 
 ## Forms
-A django form is also a python class, with fields, not unlike to models. But where the model's primary job is to face the database, the form main task is to face the user input.    
-So while the model's fields and behaviour are database oriented, the form's fields have properties, widgets and behaviour required for HTML forms and user input. 
+A django `Form` is also a python class, with fields, not unlike to models. But where the model's primary job is to face the database, the form main task is to face the user input.    
+While the model's fields and behaviour are database oriented, the form's fields have properties, widgets and behaviour required for HTML forms and **user input**. 
 
-The "ModelForm" is the bridge between the django models and django forms. The ModelForm connects the form's fields to the model's fields, and let you easily get and save data in one step from the user to the database. When the ModelForm doesn't fit, you will have to connect the form and the model in your code, get the data from the user in the form, and pass it to the model.
+The `ModelForm` is the bridge between the django models and the django forms. The `ModelForm` connects the form's fields to the model's fields, and let you easily get and save data in one step, from the user to the database. 
+
+When the `ModelForm` doesn't fit, you will have to connect the form and the model in your code, to get the data from the user in the form, and pass it to the model.
 
 
 ## Querysets
 
-A django model is the django abstraction for a database table. A Queryset is a python class that abstracts a query. It's a essentially a list-like python class, with a list of rows that the database returned for a given query criteria.    
-But since an object in django is of course much more than a "row", a queryset item is typically a complete python object with the data and functionality. 
+If a django `Model` is the django abstraction to a database table, then the `Queryset` is a python class that abstracts a query. 
 
-Like any other python list (it's not a real list, but similar to one), you can loop through the queryset, the list of objects, use list comprehentions, etc. 
+A `Queryset` is a list-like python class, with a list of rows that the database returned for a given query criteria. However, in django, you get "object" that is much more than a "row". A queryset item is typically a complete python object with both data and functionality. 
 
-The confusing issue with Querysets is that a queryset object has more than one state: when you define a queryset, it just has the criteria for the sql query, like objects.filter(field1='foo',field2='baz). The queryset is defined, but without results - yet. Django will not run the query until it actually need it. Only when the code start to reference items for the query - loop the query, access the first item in the queryset, etc - django runs it. And when used incorrectly, the same queryset may run more than once. 
+Like any other python list (it's not a real list, but similar to one), you can loop through the queryset and use list comprehentions. 
+
+The confusing issue with `Queryset` is that a queryset object has more than one state: 
+
+* Without data: When you define a queryset, it has only the criteria for the SQL query, like `objects.filter(field1='foo',field2='baz)`. The queryset is defined, but has no data - yet. 
+* With data: After django runs the underlying SQL query and populate query, it has the data. 
+
+Django will not run the query to the database until it actually needs it. Only when the application code starts to reference items of the `Queryset`, e.g. to loop the results or access the first item, django runs the SQL and gets the results, and populates the `Queryset`. And when used incorrectly, the same queryset may run more than once. 
 
 ## Views
 
@@ -96,11 +124,11 @@ Django  works great, out-of-the-box, without caching. A decent webserver and dat
 
  
 ## More Components & Customize Django
-Django has many other components, and the idea is usually the same: the developer can use the out-of-the-box django class, or subclass it and customize what is needed.
+Django has many other components, and the idea is usually the same: the django developer can use the out-of-the-box django class, or subclass it and customize what is needed.
 
-
-
-Continue to [Part 8: What Next and Some Resources](tutorial_part8.md)
+This is the final step of the tutorial.    
+Now build an awesome web application, and dive into advanced advanced in-depth resources!
+Continue to: [Part 8: What's Next and Advanced Resources](tutorial_part8.md)
 
 Support this project with my affiliate link| 
 -------------------------------------------|
