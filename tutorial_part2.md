@@ -27,7 +27,7 @@ We are good to go.
 
 Now that the models are defined, and the databases tables have been created, you can add some initial data. We will start with manual data entry via the django built-in admin app.    
 
-But first we need to tell the admin app to hook to the polls app.
+But first we need to tell the admin app to hook the polls app.
 
 
 	you@dev-machine: nano polls/admin.py
@@ -68,13 +68,13 @@ Check it in the database:
 	+----+---------------+---------------------+
 	1 row in set (0.00 sec)
 	
-*Note: There are other ways to enter data into a database, or directly with SQL, but the admin enters the data via django, so it's a good way to test how real data entry works in the web application, and to verify that all that additional calls like signals or custom save methods run and create a coherent data.*
+*Note: There are other ways to enter data into a database, e.g. directly with SQL, but the admin enters the data via django, so it's a good way to test how real data entry works in the web application, and to verify that all that additional calls like signals or custom save methods run and create a coherent data.*
 
 ## Customize the Admin
 
 The next step is to add choices for each question.
     
-The polls app already has two models: Question & Choice. The Choice model uses a foreign key to the Question model.
+The polls app already has the required models: Question & Choice. The Choice model uses a foreign key to the Question model.
 
 Edit polls/admin again:
 

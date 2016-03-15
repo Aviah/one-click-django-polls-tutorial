@@ -57,13 +57,13 @@ These are the steps that django runs:
 
 1. Django gets the URL from the webserver
 2. Django decides which view is responsible to create a page for this URL, and calls this view
-3. The called view runs, and returns an `HttpResponse` object to django.
+3. **The called view runs, and returns an `HttpResponse` object to django.**
 4. Django returns the final response to mod_wsgi
 5. mod_wsgi sends it to Apache, Apache to Nginx
 6. Nginx, which is the server that faces the internet, sends the response to the user's browser. 
  
 
-This flow is the nice thing in a web framework, and django in particular:  Your main job as the developeris, essentialy, is to define URLS and write the functions that respond to those urls. Then, (almost) everything else is handled by the framework.
+This flow is the nice thing in a web framework, and django in particular:  Your main job as the developeri, essentialy, is to define URLS and write the functions that respond to those urls. Then, (almost) everything else is handled by the framework.
 
 *Note: When the client asks for a real file (image, css file, javascript file), Nginx does not need to go to Apache and mod_wsgi. Rather, Nginx  sends the file directly.*  
 
@@ -74,11 +74,11 @@ The heavy lifting is the code that runs in django: The idea is to free the Apach
 
 ## URLs
 
-To recap, the flow of request-response is: URL to django >> django calls the correct View >> the view returns an HttpResponse to django >> django to mod_wsgi >> to Apache >> to Nginx >> Internet >> User's Browser.
+To recap, the flow of request-response is: URL to django >> django calls the correct View >> the view returns an `HttpResponse` to django >> django to mod_wsgi >> to Apache >> to Nginx >> Internet >> User's Browser.
 
 We already have the **views** in place.
 
-To tell django how to decide which view to call for each URL, we define the **urls** module. Each app can have it's own urls. 
+To tell django how to decide which view to call for each URL, we define the **urls** module. Each app may have it's own urls. 
 
 Add a `urls.py` file for the polls app:
 
@@ -107,12 +107,12 @@ After the edit, the file should look like this:
 The urls defenitions are, maybe, the most confusing part of django. In a nutshell, djago has a list of possible urls, and a specific view to call for each.    
 The confusing part is that django matches urls with regex, and it also extracts arguments from the url and pass these argument to the view (the view is a function, so it accepts arguments).
 
-**However, the basic idea is simple: django gets the URL, matches it to one of the urls` in the urls list, and calls the correct view for the first matched url.**
+**However, the basic idea is simple: django gets the URL, matches it to one of the urls in the list, and calls the correct view for the first matched url.**
 
 By default, when django tries to match a URL it looks only at the main project's `urls.py` file, at `site_repo/urls.py`. You have to explicitly tell django to look for additional apps' urls.
 
 
-Add the `poll/urls.py` to the list of urls that django uses.   
+Now, add the `poll/urls.py` to the list of urls that django uses.   
 From the site_repo directory, edit the **main** urls.py file:
 
 	you@dev-machine: nano urls.py
@@ -125,7 +125,7 @@ After the edit, the urlpatterns should looks like this:
 	    url(r'^$', home_page, name='hello-world'),
 	]
 	
-The include function will let django match urls from the polls app.
+The `include` function will tell django to match urls from the polls app.
 	
 Test it! Run the django development server:
 
@@ -141,7 +141,7 @@ Browse To | You Should See
 127.0.0.1:8000/polls/42/vote |  You're voting on question 42.
 
 It's clear that only the first view is actually using the database.    
-In the other views, django just parses the "42" argument from the url, passes it to the view, and the view renders the response with this argument.
+In the other views, django just parses the "42" argument from the url, passes it to the view, and the view renders the response with the argument.
 
 You have successfuly added views and urls to the polls app:
 

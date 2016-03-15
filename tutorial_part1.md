@@ -1,13 +1,13 @@
 # Django Tutorial Part 1: Create the Polls App
 
 
-This is the 1st part of the tutorial. Before you start make sure you reade the [intro](README.md)
+This is the 1st part of the tutorial. Before you start make sure you read the [intro](README.md)
 
 ## Start the Django Polls Tutorial
 
 When you add new code, like new apps, features, bugfixes etc, it's better to use a separate branch, and keep the master branch stable. When the master branch is stable, deployment is just pushing it to production. As long as the master is stable, you can experiment and develop freely on other branches, and safely deploy with the master branch.
 
-So, to add the polls app start with a new branch.
+So, to add the polls app, start with a new branch.
 
 **Make sure you are in the `site_repo` directory:**
 
@@ -253,7 +253,7 @@ Everything so far is on the polls-app branch. The master branch didn't change at
 
 Great Work!
 
-In the next tutorial, you will enter some manual data with the django admin.
+In the next tutorial, you will enter some manual data with the django admin.    
 Continue to [Part 2: The Django Admin](tutorial_part2.md)
 
 
