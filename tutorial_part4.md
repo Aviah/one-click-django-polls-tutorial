@@ -216,7 +216,7 @@ OK, everything is clear now. The database table for the polls app is missing.
 We deployed the code - but didn't run migrations!    
 
 Reminder: migrations tell django **how** to apply the models' changes to the database, but we still have to explicitly **run** these migrations.    
-It worked localy, because we applied the migrations file to the local database. On the server, we just pushed the migrations file, but didn't run it. The database schema is still as it was before we added the polls app.
+It worked localy, because we applied the migrations file to the local database. On the server, we just pushed the migrations file, but didn't run it. The database schema **on the server** is still as it was before we added the polls app.
     
 The solution is **deployment with migrations**.    
 
@@ -238,8 +238,7 @@ Oh, shoot! Django can't complete the dumpdata, it requires the polls models (it 
 
 One solution would be to go to the server, git checkout a previous commit, run manage.py dumpdata, and then checkout master again (when manage.py runs dumpdata, it will use the previous commit).   
 
-However, a simpler solution is to dump with MySQL. This will dump everything as-is, in SQL.    
-MySQL obviously doesn't care about the python code, and doesn't check the models on the django side. So it will backup everything as is.
+However, a simpler solution is to dump with MySQL, as-is. MySQL obviously doesn't care about the python code, and doesn't check the models on the django side. So it will backup everything.
 
 SSH  to the server again:
 
