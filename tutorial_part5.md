@@ -223,7 +223,7 @@ Click on the first question link | The details of this question
 
 When you develop a web application, it happens that you want to change the urls path. But if the urls are hardcoded in the templates, it can take a lot of time and a lot of mistakes.
 
-Django allows to refer to a url by name: whenever you use the url's name, django picks the correct url path, by this name.
+Django allows to refer to a url by name: whenever you use the url's **name**, django picks the correct url **path**.
 
 When you name a url, like `polls:detail`, you can later decide to use another url path, like:
 
@@ -234,33 +234,35 @@ When you name a url, like `polls:detail`, you can later decide to use another ur
 
 And so on. 
     
-The name of the url will not change even when you change the url path. Any reference to `polls:detail` will work, even when you change the url path. To update the url path, you can change it in **one** place - the `urls.py` file.
+The name of the url will not change even if you later change the url's path, so any reference to `polls:detail` will work, regardless of path changes. To update the url path, you can easily change it in **one** place - the `urls.py` file.
+
+*Note: changing a url path is more common during the initial development. Once users start to use the site, to bookmark pages and to link to the site, then changing path should be carefully considered. You will also need to inform search engines about the change, to keep the search engine rank for the page*
 
 To add a named url, edit the template:
 
 	you@dev-machine: nano templates/polls/index.html
 	
-Replace the line with the url path:
+Replace the line with the url's **path**:
 
 	li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
 	
-With the line that uses **named url**, and the django `url` template tag:
+With the line that uses the url's **name**:
 
 	<li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
 	
-The `url` template tag finds the correct url path for the given url name.
+The `url` template tag finds the correct url's path for the given url's name, here the name is `poll:detail`.
 	
 Check it in the browser, everything should work the same. 
 
-From a coding perspective, it will be much easier to change the URLs later.    
-**It's also an easier and a cleaner way to provide urls throughout your app. Names are less prone to errors, and more readble, than the entire url path**.
+From a coding perspective, it will be much easier to change the urls path later.    
+**Named urls are the easier,cleaner and faster way to code urls throughout your app. Names, like variables or functions, are a common programming construct. Names are less prone to errors - and more readble - than the url's path**.
 
 The `polls:detail` name comes from **two** `urls.py` files:
 
 1. "polls": from the main `site_repo/urls.py`, where the **namespace** `polls` is defined for the entire polls app's urls.
-2. "detail": is a **specific** name for specific a url in the app's at `site_repo/polls/urls.py`.
+2. "detail": is a **specific** name for a specific url in the app's at `site_repo/polls/urls.py`.
 
-Namespace urls have the same naming pattern: "namespace:specific-url".
+Namespaced urls have the same naming pattern: "namespace:specific-url".
 
 
 Now, see what has changed:
