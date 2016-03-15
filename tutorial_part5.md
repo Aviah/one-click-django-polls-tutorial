@@ -135,7 +135,7 @@ If the list is empty, it will show "No polls are available".
 Since a template can handle some Python objects & attributes, django can render `{{ question.id }}` with the `id` attribute of the `question` object.
 
 The template starts with `extends`. With `extends`, the shared parts of the site are saved in one or more **base templates**, and the rest of the templates **extend** the base.    
-When  `extends` tag you don't have to write the complete HTML code again and again. The `base.html` template contains the global features, like a favicon, and these features are inheretied to all the templates that extend the base. No need to re-add these features to all the other templates.    
+When you use the `extends` tag, you don't have to write the complete HTML code again and again. The `base.html` template contains the global features, like a favicon, and these features are inheretied to all the templates that extend the base.    
 The `block` part, here `{% block body %}`, is designed to replace or add  elements of the base templates that are specific to the current template.    
 
 *Note: Django templates have A LOT of features and options. See the django docs.* 
@@ -189,12 +189,13 @@ After the edit, the index and detail views should look like this:
 
 Make sure you added the `from django.http import Http404` line.
 
-Both views are now using templates, and both ask django to render the html template file with a data dictionary.
+Both views are now using templates, and both ask django to `render` the HTML template file with a data dictionary.
 
 ### The views also use the database
 
  
-The **index** view queries for a list of the first 5 questions: `[:5]`. The questions are sorted decsending, by the pub_date: `order_by('-pub_date')`.    
+The **index** view queries for a list of the first 5 questions: `[:5]`.    
+The questions are sorted decsending, by the pub_date: `order_by('-pub_date')`.    
 
 This is the common way to query with django: 
 
@@ -202,7 +203,7 @@ This is the common way to query with django:
 2. The `objects` manager gets the "objects" using the criteria. Each "object" is essentially a row of data, but it's also a python object with many addtional methods and attributes (objects typically hold both data and functionality). 
 3. The "objects" that the manager returns are packed in a `QuerySet` object, the Python data class that the view can work with.
 
-Similarly, the **detail** view uses the `Question` model's `objects` manager, but asks for just one record, by the question's primary key. The method to get a single record is `.get`, 
+Similarly, the **detail** view uses the `Question` model's `objects` manager, but asks for just one record, by the question's primary key. The method to get a single record is `.get`. 
 
 Check it! Run the django development server (assume you run it from the `site_repo` dir):
 
@@ -220,11 +221,11 @@ Click on the first question link | The details of this question
 
 ## Remove Hardcoded URLs in Templates
 
-When you develop a web application, it happens that you want to change the urls. But if the urls are hardcoded in the templates, it can take a lot of time and a lot of mistakes.
+When you develop a web application, it happens that you want to change the urls path. But if the urls are hardcoded in the templates, it can take a lot of time and a lot of mistakes.
 
-Django allows to refer to a url by name: whenever you use the url's name, django picks the correct url by this name.
+Django allows to refer to a url by name: whenever you use the url's name, django picks the correct url path, by this name.
 
-When you name a url, like "polls:detail", you can later decide to use:
+When you name a url, like `polls:detail`, you can later decide to use another url path, like:
 
 * `www.yourdomain.com/polls/42`
 * `www.yourdomain.com/polls/question/42`
@@ -233,30 +234,36 @@ When you name a url, like "polls:detail", you can later decide to use:
 
 And so on. 
     
-The name of the url, **"polls:detail"**, will not change even when you change the url. Any reference to "polls:detail" will be OK, and you can change the actual url in one place.
+The name of the url will not change even when you change the url path. Any reference to `polls:detail` will work, even when you change the url path. To update the url path, you can change it in **one** place - the `urls.py` file.
 
 To add a named url, edit the template:
 
 	you@dev-machine: nano templates/polls/index.html
 	
-Replace this line:
+Replace the line with the url path:
 
 	li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
 	
-With this one, which uses the django `url` template tag:
+With the line that uses **named url**, and the django `url` template tag:
 
 	<li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
 	
+The `url` template tag finds the correct url path for the given url name.
 	
 Check it in the browser, everything should work the same. 
 
 From a coding perspective, it will be much easier to change the URLs later.    
-
 **It's also an easier and a cleaner way to provide urls throughout your app. Names are less prone to errors, and more readble, than the entire url path**.
 
-**url namespace:** Note that the `polls:detail` name comes from the main `site_repo/urls.py`, where the namespace `polls` is defined, and then the specific name for each url in the app urls file, at `site_repo/polls/urls.py`.
+The `polls:detail` name comes from **two** `urls.py` files:
 
-See what has changed:
+1. "polls": from the main `site_repo/urls.py`, where the **namespace** `polls` is defined for the entire polls app's urls.
+2. "detail": is a **specific** name for specific a url in the app's at `site_repo/polls/urls.py`.
+
+Namespace urls have the same naming pattern: "namespace:specific-url".
+
+
+Now, see what has changed:
 
 	you@dev-machine: git status
 	
