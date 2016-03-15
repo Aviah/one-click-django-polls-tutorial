@@ -1,36 +1,36 @@
 # Django Tutorial Part 5: Templates
 
-This is part 4 of the tutorial.    
+This is part 5 of the tutorial.    
 Make sure you finished [Part 4](tutorial_part4.md)
 
 **Quick reminder**: 
 
-In parts 1-4 you created the polls app and deployed it to production server with migrations and initial data.
+In parts 1-4 you created the polls app and deployed it to the production website, with migrations and initial data.
 
-In this part, you will add templates, which will enable your views to provide complete web pages.
+In this part, you will add templates, and enable the views to provide complete web pages.
 
 ## Reminder: how django works
 
 In a nutshell, the django framework carries out the following process:
 
-1. Gets a URL request from a web server
-2. Decides what view function to call for that URL, and call this view
+1. Gets a request with a URL from the web server
+2. Decides what view function to call for that URL, and call the view
 3. The view runs and returns a reposnse to django.
 4. Django handles the response to the web server
 
-Your job, as a django developer, is mostly to write views, and hook them to URLs. Django will do the rest. Although in time web applications can become very complex, this is still the crux: writing views and hook them to URLs.
+Your job, as a django developer, is mostly to write views, and hook them to URLs. Django will do the rest. Although in time web applications can become very complex, this is still the crux: write views and hook them to URLs.
 
 ## Two Types of Views
 
 Generaly, there are two types of views:
 
-1. **Views that generate a complete web page**: The view function generates a complete web page, with HTML and everything. When django calls the view, it is the view responsibility to create the **web page & the data**.
+1. **Views that generate a complete web page**: The view function generates a complete web page, with HTML and everything. When django calls it, the view is responsibile to create the **web page & with the data**.
 
-2. **Views that return only data**: The view does not need to render a page, it just returns some data. The client is responsible for the rendering. A mobile app needs just the data, and then the app already knows how to render the GUI, or activate the audio, or show the video. Same idea for a rich-client web application, where the client gets only the data, typically via AJAX, and uses the client-side javascript to render the page.
+2. **Views that return only data**: The view does **not** need to render a page, it just returns some data. The client is responsible for the rendering. A mobile app needs just the data, and then the app already knows how to render the GUI. Same idea for a rich-client web application, where the client gets the data, typically via AJAX, and uses the client-side javascript to render the page.
 
 
-Both types of views typically involve some backend processing. But once this processing is done, the only-data view finishes. It returns the data as-is to django.    
-The page generating view still needs, however, to **use** the data and prepare a page.
+Both types of views typically involve some backend processing. But once this processing is done, the "data-only view" finishes. It returns the data as-is to django.    
+The view that generates a complete page still needs, however, to **use** the data and prepare a page.
 
 
 Here is a simple workflow of these views:
@@ -47,9 +47,9 @@ Step| View that generates a complete page | View that responds with data
 7|Return the complete page|
 
 
-Fortunately for the page generating views (and the developers that write them), django has **templates**. Once the data dictionary is ready (step 4), it's easy - just pass it to django with a template of an HTML page. Django will render the template, prepare the complete web page, and send it back to the web server.
+Fortunately for the page generating views (and the developers that write them), django has **templates**. Once the data dictionary is ready (step 4), it's easy: Just pass it to django with a template of an HTML page. Django will render the template, prepare the complete web page, and send it back to the web server.
 
-## Rendering Templates in Django
+## Render a Templates in Django
 
 Most of the views that render pages are built like this:
 
@@ -65,13 +65,13 @@ Most of the views that render pages are built like this:
 	
 	
 		
-This tells django to render the `templatefile.html` with the data from Dcontext, and send the (rendered) complete page to the web server.
+This tells django to render the `templatefile.html` with the data from `Dcontext`, and send the (rendered) complete page to the web server.
 
-*Note: You can also define a django view as a class. See part 7 of this tutorial, about class based views (CBV). Both function views and class based views render a template in a similar way with the same django templates engine*
+*Note: You can also define a django view as a class. See part 7 of this tutorial, about class based views (CBV). Both function views and class based views render templates in a similar way, with the same django templates engine*
 
 What is `render`?
 
-It's a django provided function that means: **"Replace a placeholder in the template, with actual data from a dictionary, by key".**   
+It's a django provided function that means: **"Replace a placeholder in the template with actual data from a dictionary, by key".**   
 
 If the `templatefile.html` has a line like this :
 
@@ -81,7 +81,7 @@ And the Dictionary `Dcontext` has a `"title"` key like this:
 
 	{'title':'Hello World!!!'}
 	
-Then django's render replaces the `{{ title }}` placeholder in the template with the value of `Dcontext['title']`. The final HTML is:
+Then django's `render` replaces the `{{ title }}` placeholder in the template with the value of `Dcontext['title']`. The final HTML is:
 
 	<h1> Hello World!!! </h1> 
 
@@ -89,7 +89,7 @@ Then django's render replaces the `{{ title }}` placeholder in the template with
 ## Adding Templates 
 
 First checkout the polls-app branch.    
-Reminder: master should be used only for the stable code, after it's ready for deployment.
+Reminder: master should be used only for the stable code, that is ready for deployment.
 
 From the `site_repo` dir:
 
@@ -131,11 +131,11 @@ The django templates are smart templates, and django has a **template language**
 In the above example, the template will iterate with a `for` loop over the `latest_questions_list`, and will add a line for each entry in the list.
 If the list is empty, it will show "No polls are available".
 
-Since template can handle some **Python objects & attributes**, django can render `{{ question.id }}` with the `id` attribute of the `question` object.
+Since a template can handle some **Python objects & attributes**, django can render `{{ question.id }}` with the `id` attribute of the `question` object.
 
-The template starts with `extends`. So you don't have to write the complete HTML code again and again. The shared parts of the site are saved in one or more **base templates**, and the rest of the templates **extend** the base.    
-When the `base.html` has a global feature, like a favicon, there is no need to re-add it for all the other templates. Just include any global feature in the base template, then extend it.    
-The `block` part, here `{% block body %}`, is designed to replace or add  elements of the global templates that are specific to the current template.    
+The template starts with `extends`. The shared parts of the site are saved in one or more **base templates**, and the rest of the templates **extend** the base.
+With the `extends` tag you don't have to write the complete HTML code again and again. The `base.html` template contains the global features, like a favicon, and these features are inheretied to all the templates that extend the base. No need to re-add these features to all the other templates.    
+The `block` part, here `{% block body %}`, is designed to replace or add  elements of the base templates that are specific to the current template.    
 
 *Note: Django templates have A LOT of features and options. See the django docs.* 
 
@@ -165,7 +165,7 @@ After the edit, the file should look like this:
 	
 ### Use the Templates in Views
 
-Now edit the views, so it can use the templates:
+Now edit the views, to use the templates:
 
 	you@dev-machine: nano polls/views
 	
@@ -193,7 +193,7 @@ Both views are now using templates, and both ask django to render the html templ
 ### The views also use the database
 
  
-The **index** view queries for a list of the first 5 questions (`[:5]`), sorted decsending, by pub_date (`order_by('-pub_date')`).    
+The **index** view queries for a list of the first 5 questions `[:5]`, sorted decsending, by pub_date `order_by('-pub_date')`.    
 
 This is the common way to query with django: 
 
