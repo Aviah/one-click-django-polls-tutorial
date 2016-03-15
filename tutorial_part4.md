@@ -1,47 +1,39 @@
 # Django Tutorial Part 4: First Deployment
 
-This is the 4th part of using the official django tutorial in the one-click-django environment.    
+This is part 4 of the tutorial.    
 Make sure you finished [Part 3](tutorial_part3.md)
 
 **Quick reminder**: 
 
-In parts 1-3 you have created the polls app, added initial data with the django admin, and the urls & views required to browse the polls up from a browser.
+In parts 1-3 you have created the polls app, added initial data with the admin, and the urls & views required to browse the polls app from a browser.
 
-Now you will deploy the work you have done so far, and see how it looks on a real website.
+In this part, you will deploy the work you have done so far, and see how it looks on a real website.
 
 ## Test Localy with Apache/Nginx
 
-So far we have tested the site with django development server. It's a great and easy way to work on the site when you code. But before deployment, you want to test that everything works on Apache/Nginx.
+So far we have tested the site with django development server. It's a great and easy way to work on the site when you code, but before deployment, you want to test that everything works on Apache/Nginx.
 
-Restart Apache:
+Restart Apache and Nginx, according to your dev environment.
 
-OSX
+OSX:
 
 	you@dev-machine-osx: sudo apachectl restart
-	
-Ubuntu
-
-	you@dev-machine-ubuntu: sudo service apache2 restart
-	
-	
-Nginx:
-
-OSX
-	
 	you@dev-machine-osx: sudo nginx
 	
 *Note: if nginx is already running, use sudo nginx -s reload*
 	
-Ubuntu	
-	
+Ubuntu desktop:
+
+	you@dev-machine-ubuntu: sudo service apache2 restart
 	you@dev-machine-ubuntu: sudo service nginx restart
 	
+		
 	
-*Note: if you use the local apache and Nginx often, you don't have to restart. To reload the code to mod_wsgi just touch the site_repo/wsgi.py file. If Nginx configs didn't change there is no need to reload or restart it as well.    
-There is an alias for that: $ site-reload*
+If you use the local apache and Nginx often, you don't have to restart. To reload the new django code to mod_wsgi just touch the `site_repo/wsgi.py` file. If Nginx configs didn't change there is no need to reload or restart it.    
+The alias to reload the django code is: `$ site-reload`
 
 Browse to the local site at **127.0.0.1**.
-This address  does **not** use :8000, which is used by the django development web server.
+This address  does **not** use :8000, which is used by the django development server.
 
 Browse to the site:
 
@@ -52,7 +44,7 @@ Browse To | You Should See
 127.0.0.1/polls |  A list of the questions you entered in the admin
 127.0.0.1/polls/42/ |  You're looking at question 42
 
-OK, it works on Apache/Nginx, so the code is ready for deployment.
+OK, it works on the local Apache/Nginx, and the code is ready for deployment (in a more advanced project you will also run the test suite before deployment).
 
 Current status:
 
@@ -115,7 +107,7 @@ Status:
 	#
 	nothing to commit (working directory clean)
 	
-So after the merge with the polls-app branch, the local repository is ahead of the main project repository:
+After the merge, the local repository is ahead of the main project repository:
 
 	you@dev-machine: git push
 	
@@ -176,15 +168,15 @@ Since we changed only Python code, a simple deployment will do:
 The fabric log tells us that:
 
 1. Master was pushed to production
-2. Production working directory updated with reset --hard
-3. The settings_production.py was re-copied to site_config
-4. Mod_wsgi should reload the new code, after the touch wsgi.py
+2. Production working directory updated with `git reset --hard`
+3. The `settings_production.py` was re-copied to site_config
+4. Mod_wsgi should reload the new code, after the `touch wsgi.py`
 
-*Reminder: settings_production.py is maintained in the repo, but the actual file loaded to mod_wsgi is the one in the site_config directory, **outside** the repo. This enables an environment specific settings, see [Project Reference](project_ref.md)*
+*Reminder: `settings_production.py` is maintained in the repo, but the actual file loaded to mod_wsgi is the one in the site_config directory, **outside** the repo. This enables to keep all the settings files in the repo, and use only one of them in each environment. Fabric also keeps the secrets.py file. See the [Project Reference](https://github.com/Aviah/one-click-django-docs)*
 
 Deployment seems to work. Time to check the website. 
 Go the website with your browser, at yourdomain.com   
-Browse to the new polls app, at **www.yourdomain.com/polls**
+Browse to the new polls app, at `www.yourdomain.com/polls`
 
 Ooops! 500 Serrver Error?    
 That's annoying. Everything worked perfectly well localy!    
@@ -204,16 +196,16 @@ And take a look at the logs:
 	
 You should now see the tail of the 4 following logs:
 
-1. The django main.log, that will log everything you log in code with logging.getLogger('main').info or higher logging level
-2. The django debug, that will log everything you log in code with logging.debug, only in dev environment
+1. The django `main.log`, that logs everything you log in code with `logging.getLogger('main').info` or higher logging level
+2. The django `debug.log`, that logs everything you log in code with `logging.debug`, and only in dev environment
 3. The Apache error log
 4. The Nginx error log
 
 
-*Note: tail-logs will only work if you ssh with your user, because it requires sudo to Athe pache and Nginx error logs, and the django user on the server does not have sudo permissions. For more details about logging see [Coding Refence](coding_ref.md)*
+*Note: tail-logs will only work if you ssh with your user, because it requires sudo to Atpache and Nginx error logs. The django user on the server does not have sudo permissions. For more details about logging see [Coding Reference](https://github.com/Aviah/one-click-django-docs/blob/master/coding_ref.md)*
 
 
-Look closely at main.log. There is a line that says:
+Look closely at `main.log`. There is a line that says:
 
 	ProgrammingError: (1146, "Table 'django_db.polls_question' doesn't exist")
 	
@@ -221,10 +213,10 @@ OK, everything is clear now. The database table for the polls app is missing.
 We deployed the code - but didn't run migrations!    
 
 Reminder: migrations tell django **how** to apply the models' changes to the database, but we still have to explicitly **run** these migrations. It worked localy, because we applied the migrations file to the local database.    
-On the server, we just pushed the migrations file, but didn't run it. The database is still as it was before the polls app was added.    
-The solution is a **deployment with migrations**.    
+On the server, we just pushed the migrations file, but didn't run it. The database is still as it was before we added the polls app.    
+The solution is **deployment with migrations**.    
 
-So, exit the server, back to the local machine.   
+Exit the server, back to the local machine.   
 Before any migration, it's' better to backup the current database:
 
 	you@dev-machine: fab backup
@@ -243,7 +235,7 @@ Oh, shoot! Django can't complete the dumpdata, it requires the polls models (it 
 One solution would be to go to the server, git checkout a previous commit, run manage.py dumpdata, and then checkout master again (when manage.py runs dumpdata, it will use the previous commit).   
 
 However, a simpler solution is to dump with MySQL. This will dump everything as-is, in SQL.    
-MySQL obviously doesn't care about the python code, and doesn't check the the models on the django side. So it will backup everything as is.
+MySQL obviously doesn't care about the python code, and doesn't check the models on the django side. So it will backup everything as is.
 
 SSH  to the server again:
 
@@ -291,7 +283,7 @@ Check:
 	</html>    
 	
 	
-Site is in maintenance, Nginx just returns a static page.
+The site is in maintenance, Nginx just returns a static page.
 
 Finally, the migration:
 
@@ -314,10 +306,10 @@ Finally, the migration:
 	Done.
 	Disconnecting from django@45.33.93.118... done.
 
-Now it worked. Django applied the polls.0001_initial migrations to the databse.    
-You can SSH to the server, login to MySQL, and check the new polls tables in the django_db database.
+Now it worked. Django applied the `polls.0001_initial` migration to the databse.    
+You can SSH to the server, login to MySQL, and verify that the new polls tables are already in the django_db database.
 
-Check the site at **www.yourdomain.com/polls**.   
+Check the site at `www.yourdomain.com/polls`.   
 Ahmmm…Page not found? 404?    
 Ah, the site is still in maintenance.
 Restart:
@@ -325,25 +317,24 @@ Restart:
 	you@dev-machine: fab site_up
 	
 
-Check again at **www.yourdomain.com/polls**    
+Check again at `www.yourdomain.com/polls`    
 Good news, the 500 error is gone.
 But there is nothing else either.
    
 Obviously there is nothing to see, since there are no questions in the **server's** database - yet.   
-Go to the admin, on the server, at **www.yourdomain.com/admin**.    
+Go to the admin, on the server, at `www.yourdomain.com/admin`.    
 Login, and add some questions, similarly to how you entered questions localy.
 
 *Note: use the server django superuser name and passowrd you provided when installing one-click-django-server.*
 
-After adding a question or two, go to **www.yourdomain.com/polls**    
+After adding a question or two, go to `www.yourdomain.com/polls`.    
 And here are your questions.
 
 Great work!
 
-You deployed a migration, and handled some issues with server troubleshooting.
+You deployed a migration, and handled some issues of server troubleshooting.
 	
-Now that everything works, there must be a way to make these pages look a bit better? a bit more useful?
-
+Now that everything works, there must be a way to make these pages look a bit better? a bit more useful?    
 Continue to [Part 5: Templates](tutorial_part5.md)
 
 
