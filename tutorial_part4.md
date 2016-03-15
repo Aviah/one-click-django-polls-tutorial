@@ -175,7 +175,7 @@ The fabric log tells us that:
 3. The `settings_production.py` was re-copied to site_config
 4. Mod_wsgi should reload the new code, after the `touch wsgi.py`
 
-Reminder: `settings_production.py` is maintained **in the repo**, but the actual file loaded to mod_wsgi is the one in the `site_config` directory, **outside** the repo. So you keep all the settings files in the repo, and use only one of them in each environment. Fabric also keeps the secrets.py file. See the project reference: [Production & Development Settings](https://github.com/Aviah/one-click-django-docs/blob/master/project_ref.md#production--development-settings).
+Reminder: `settings_production.py` is maintained **in the repo**, but the actual file loaded to mod_wsgi is the one in the `site_config` directory, **outside** the repo. So you maintain all the settings files in the repo, and use only one of them in each environment. Fabric also keeps the `secrets.py` file. See the project reference: [Production & Development Settings](https://github.com/Aviah/one-click-django-docs/blob/master/project_ref.md#production--development-settings).
 
 Deployment seems to work. Time to check the website. 
 Go to the website with your browser, at yourdomain.com.   
