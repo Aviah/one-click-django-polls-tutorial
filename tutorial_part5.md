@@ -300,7 +300,8 @@ Commit and push:
 
 You had quiet a progress, everything works, so it's a good time to deploy.
 
-Check the local site with Nginx & Apache. If you didn't stop Nginx & Apache after testing in Part 4, you just have to tell mod_wsgi to reload the site. From `site_repo`:
+Check the local site with Nginx & Apache. If you didn't stop Nginx & Apache after testing in Part 4, you just have to tell mod_wsgi to reload the site.    
+From `site_repo`:
 	
 	you@dev-machine: touch wsgi.py
 	
@@ -325,9 +326,9 @@ Ubuntu desktop:
 Check the local site at `127.0.0.1/polls`
 
 	
-*Note: Changes to the templates HTML code do not require a mod-wsgi reload. As soon as the template changes, django picks the new file. This is why new HTML code should be deployed only in sync with a reload of the matching Python code. Otherwise django uses the newer HTML template, with the older python code. It's not a problem if you changed style or markup, but if the template looks for an argument that is available only in the newer python version, this may trigger an error. See [Deployment](https://github.com/Aviah/one-click-django-docs/blob/master/deployment.md)*
+*Note: A change to the templates' HTML code does not require a mod-wsgi reload. As soon as the template changes, django picks the new file. This is why new HTML code should be deployed only in sync with a reload of the matching Python code. Otherwise, django uses the newer HTML template, with the older python code. It's not a problem if you changed style or markup, but if the template looks for an argument that is available only in the newer python version, this may trigger an error. See [Deployment](https://github.com/Aviah/one-click-django-docs/blob/master/deployment.md)*
 
-Make sure the polls-app status is OK:
+Make sure that the polls-app status is OK:
 
 	you@dev-machine: git status
 	
