@@ -1,19 +1,19 @@
 # Django Tutorial Part 6: Forms
 
-This is the 6th part of using the official django tutorial in the one-click-django environment.    
+This is part 6 of the tutorial.    
 Make sure you finished [Part 5](tutorial_part5.md)
 
 **Quick reminder**: 
 
-In parts 1-5 you have created the polls app, and added initial data with the django admin. The website already serves a few pages with the app urls, views, and templates.
+In parts 1-5 you created and deployed the polls app, which now runs several web pages, with models, views and templates. You also entered initial data with the django admin.
+
+In this part, you will add voting data via a standard web-page form. 
+
 
 
 ## Intro to Forms in Django
 
-
-Until now, the browser requests from the django site was a simple URL. Django had to matched the URL with the urls list in the urls.py files, and once a match was found, django called the correct view for that URL.
-
-When you use forms, the client (the browser) sends additional information . If it's a GET form, the form arguments are sent in the url. When it's a post form, via HTTP:
+When you use forms, the browser sends the form's data as additional information. If it's a GET form, the form's arguments are sent in the url. When it's a POST form, the arguments are sent via HTTP:
 
 
 Feature | GET | POST
@@ -24,12 +24,11 @@ Available to the django view with | request.GET | request.POST
 Form is translated by django to| Python dictionary | Python dictionary
 
 
-So, in a nutshell, any view can accept forms, and any view that accepts forms can use the python dictionary that django creates from the form data 
+Any view can accept forms, and any view that accepts forms can use the python dictionary that django creates.
 
+*Note: django's Class Based generic Views are really great when it comes to forms. The generic views hook everything together, and provide a ready and cleaned data*
 
-*Note: Class based generic views are really great when it comes to forms, the generic views hook all the forms-views steps together and provide the ready cleaned data*
-
-*Note: POST is more secure, mainly because URLS are saved in the browser history and in the server logs, so even when the site uses https there is a way to see the form data*
+*Note: POST forms are more secure, mainly because the GET urls with the form's arguments are saved in the browser history, and in the server logs. So even when the site uses https, there is a way to see the form data*
 
 
 ## Add a Form
@@ -40,7 +39,7 @@ First, to the development branch:
 	you@dev-machine: git checkout polls-app
 	
 
-Edit the detail form:
+Edit the detail template and add the HTML form:
 
 	you@dev-machine: nano templates/polls/detail.html
 	
@@ -69,19 +68,22 @@ After you edit the file, it should look like this:
 
 Quite a few new things here:
 
-1. The HTML form **action**: The target URL when the user submits, goes to the polls:vote url. Django uses the url name to provide the actual url.
-2. The HTML form **method** is "post", so the view will read the data in request.POST
+1. The HTML form **action**: The target url when the user submits the form, goes to the `polls:vote` url. Django uses the url's name, to provide the actual url path.
+2. The HTML form **method** is "post", so the view will read the form's data in `request.POST`.
 3. A loop that adds a radio button for each choice
-4. A **submit** button.
-5. Django renders the form fields, but the you define the **form tag** and the **submit button**.
+4. A `submit` button.
+5. Django renders the form fields, but the you define the `form` tag, and the `submit` button.
 
 
-Add the view code that will handle the (truth) form. Edit the views file:
+## View that Accepts a Form
+
+Add the view code that will handle the (truth) form.    
+Edit the views file:
 
 	you@dev-machine: nano polls/views.py
 	
 	
-The imports statements should look like this: 
+The `import` statements should look like this: 
 
 	from django.core.urlresolvers import reverse
 	from django.http import HttpResponse,HttpResponseRedirect, Http404
@@ -92,32 +94,37 @@ The imports statements should look like this:
 This is the votes view:
 
 	def vote(request, question_id):
-    p = get_object_or_404(Question, pk=question_id)
-    try:
-        selected_choice = p.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form.
-        return render(request, 'polls/detail.html', {
-            'question': p,
-            'error_message': "You didn't select a choice.",
-        })
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
+		p = get_object_or_404(Question,pk=question_id)
+    	try:
+    		selected_choice = p.choice_set.get(pk=request.POST['choice'])
+    	except (KeyError, Choice.DoesNotExist):
+    		# Redisplay the question voting form.
+        	return render(request, 'polls/detail.html',{
+        		'question': p,
+            	'error_message': "You didn't select a choice.",
+        		})
+    	else:
+    		selected_choice.votes += 1
+        	selected_choice.save()
+        	# Always return an HttpResponseRedirect after successfully dealing
+        	# with POST data. This prevents data from being posted twice if a
+        	# user hits the Back button.
+        	return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
+
+The first step is to check if the question exists at all, otherwise the view raises 404.
+
+Then, when a form view accepts a request, it has to decide if:
+
+1. The user just got to the form page, so it asks for a new empty form
+2. Or, the user already filled the form and submited it with data
+
+To decide, the view tries `request.POST['choice']`. If it doesn't exist, then the user asked for the form and the view redisplays it.   
+Otherwise, it's a sbmitted form: the vote is incremented and saved, and the view redirects to the results url.    
 
 
-Like any view that accepts a form, when called, the view has to decide if:   
+## Redirect after successful submit
 
-1. The user asked for a new empty form
-2. Or, the user filled the form and submited it
-
-So if the question exists at all (otherwise the view raises 404), the view tries POST['choice'], and redisplay the form if it doesn't exists. Otherwise, the vote is increamented and saved, and the view redirects to the results url.    
-
-The results url is found with **reverse**, which takes a named url, and return the path for it:
+The results url is found with `reverse`, which takes a named url, and returns the url's path:
 
 	 reverese('polls:results',1)
 	 
@@ -135,13 +142,12 @@ To see the results, edit the results view as well, so it looks like this:
    		question = get_object_or_404(Question, pk=question_id)
    		return render(request, 'polls/results.html', {'question': question})
  
-
     		
-Add the results.html template:
+Add the `results.html` template:
 
 	you@dev-machine: nano templates/polls/results.html
 	
-After the edit it should look like this:
+After the edit, it should look like this:
 
 	{% extends "base.html" %}
 
@@ -165,9 +171,9 @@ Run the django development server:
 	you@dev-machine: .././manage.py runserver
 
 
-Check at **127.0.0.1:8000/polls/1**
+Check at `127.0.0.1:8000/polls/1`.
 
-If you entered choices for this question, the voting page should appear. vote and submit - and the results page shows.
+If you entered choices for this question, the voting page should appear. Vote and submit: the results page should show the count for each vote.
 
 Commit and Push:
 
@@ -182,11 +188,11 @@ Commit and Push:
 # Deployment
 
 
-Reload the site and test localy with Apache/Nginx:
+Reload the site and test localy with Nginx & Apache:
 
 	you@dev-machine: touch wsgi.py
 	
-Check at **127.0.0.1/polls/1**
+Check at `127.0.0.1/polls/1`
 
 
 Should work.
@@ -199,31 +205,32 @@ Merge to master:
 	you@dev-machine: git push
 	
 	
-We don't really need the polls-app branch now. When you will add more new code, you  will create a new temporary branch based on master.    
-Delete:
+We don't really need the `polls-app` branch now. When you will add more new code to the polls app, you can create a new temporary branch.
+
+Delete `polls-app`:
 
 	you@dev-machine: git branch -d polls-app
-	
 	Deleted branch polls-app (was 2feacb0).
 	
 
-OK! Ready for deployment!    
-It's only Python & HTML, so simple deployment will do:
+OK! Ready for deployment.
+    
+It's only Python & HTML, so a simple deployment will do:
 
 	you@dev-machine: fab deploy 
 	
 
-
-Cast your vote at your site, at **www.yourdomain.com/polls**
+Finally, cast your vote at your site, at `www.yourdomain.com/polls`!
 
 
 
 Great work!
 
-You added a form view, and now have a more streamlined web application. 
+You added a form view, and **now you have a working polls web application on  a real website. Congrats!**
 
-This is the last step of this tutorial. You will probably want to advance toward building a full web application, so
-Continue to [Part 7: What Next and Some Resources](tutorial_part7.md)
+This is the last step of the coding in this tutorial.
+The next part is a recap of the "moving parts" of the framework, the common components that you work with as a django developer.    
+Continue to [Part 7: A Brief Overview of Django's Base Components](tutorial_part7.md)
 
 Support this project with my affiliate link| 
 -------------------------------------------|
