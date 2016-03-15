@@ -16,7 +16,7 @@ So this part is a quick recap.
  
 [Models](#models)    
 [Forms](#forms)    
-[Querysets](#queryset)    
+[Querysets](#querysets)    
 [Views](#views)    
 [Templates](#templates)     
 [URL Resolvers](#url-resolvers)    
@@ -36,7 +36,7 @@ Django runs the models with a python metaclass: you provide the definitions, and
 
 Models are a great and easy way to work with data: you get both the data and the functionality to manipulate it, in one python object. The model provides the data as an "object": essentially, a model object is a data row, encapsulated with python methods and properties.
 
-The limits of the models start to appear when you work with large sets of data. Sets are the task that SQL was designed to solve, while object oriented approach is somewhat limited with large sets.    
+**SQL:** The limits of the models start to appear when you work with large sets of data. Sets are the task that SQL was designed to solve, while object oriented approach is somewhat limited with large sets.    
 The django ORM (object-relational-mapping) can take you a long way with aggregates and sets, but it has it's limit. Luckily, django provides easy access to raw sql, when you need it.
 
 
@@ -68,20 +68,26 @@ Django will not run the query to the database until it actually needs it. Only w
 
 A view is a python function, or class, that gets an HTTP request, do something with it, and then sends back a response.    
 
-Views are the core component of django: The framework main job is to get the request from the webserver, send it to the correct view, and then take the view result - the response - and send it back to the webserver. As a django developer, the development work is actually writing views: figure out what is the required response for each url, and write the correct view to provide this response.
+Views are the core component of django: The framework's main job is to get the request from the web server, send it to the correct view, and then get the view result - the response - and send it back to the web server.
+As a django developer, the development work is actually writing views: figure out what is the required response for each url, and write the correct view to provide this response.
 
-** Class Based Views (CBV) **    
-Django earlier versions used functions as views: the view function received the request as an argument, possibly with more arguments, and returned an HttpResponse. Simple and stright forward.    
-Later, django introduced Class Based Views. Like many other django components, it's now possible to define a view by subclassing a django class.   
-With the CBV, django introduced generic views, base classes that already do what most common web application views do: add a new item, delete item, edit and item, render a template, redirect, etc. 
+**Class Based Views (CBV)**    
+Django earlier versions used functions as views: the view function received the request as an argument, possibly with more arguments, and returned an 'HttpResponse'. Simple and stright forward.    
 
-The CBV, and the generic views, are great if you need the very common use cases (e.g.  show a simple list of items). But once you need some not-so-obvious functionality, it becomes incredibly complicated to use the correct subclass, mixins, methods and properties. To get an idea, see the [complete CBV reference](https://ccbv.co.uk/).
-Another disadvantage of CBV is that the flow of execution is less clear than a simple function. It's harder to debug when things run somewhere in the inheritence chain.    
-However, again, CBV are great to have a progeress fast, and much simpler code on the common things. It's effective when you need a common functionality that repeats  in many views (or to add such functionality to many views later in the project). In a way, class based views better fit django's general concept of exposing core components as classes (models, forms, handlers, etc), and let you subclass and customize what you need. 
+Later, django introduced Class Based Views. Like many other django components, it's now possible to define a view by subclassing a django core class.   
+
+With CBV, django also introduced **generic views**, a set of base classes that already do what most common web application views need: add a new item, delete item, edit an item, render a template, redirect, etc. 
+
+The CBV - and the generic views -  are great when you need the very common use cases (e.g.  show a simple list of items). But once you need some not-so-obvious functionality, it becomes incredibly complicated to use the correct subclass, mixins, methods and properties. To get an idea, see the [complete CBV reference](https://ccbv.co.uk/).
+
+Another disadvantage of CBV is that the flow of execution is less clear than a simple view function. It's harder to debug when things run somewhere in the inheritence chain.
+    
+However, again, CBV are great to get a fast development progeress, and a much simpler code base for the common tasks. It's effective when you need a common functionality that repeats  in many views (or to add such functionality to many views later in the project).   
    
-So CBV are somewhere between an amazing toolbelt on the one hand, that let's you code these tedious repeating tasks in just a few lines (not unlike how django saves you the time of dealing with HTTP), or, on the other extreme, an insane [complex architecture](http://www.joelonsoftware.com/articles/fog0000000018.html).
+So CBV are somewhere between an amazing toolbelt on the one hand, that let's you code these tedious repeating tasks in just a few lines of code (not unlike how django saves you the time of dealing with HTTP), or - on the other extreme - yet another insane [complex objects architecture](http://www.joelonsoftware.com/articles/fog0000000018.html).
 
-At the end of the day, the CBV issue is the old OOP issue, applied to views. OOP has a lot of  pros, but also cons, and it's best to know both CBV and function based views, and choose what fits for your personal programming style, the project, and the specific view at hand.
+At the end of the day, the CBV issue is the old OOP issue, applied to views. OOP has a lot of  pros, but also cons, and it's best to know both CBV and function based views, and choose what fits for your personal programming style, the project, and the specific view at hand.    
+In a way, class based views are a better fit to django's general concept of exposing the core components as classes (models, forms, handlers, etc), and let you subclass and customize what you need.
 
 Important to read:     
 [The django docs about class based views](https://docs.djangoproject.com/en/1.8/topics/class-based-views/intro/)      
@@ -92,11 +98,12 @@ Important to read:
 
 ## Templates
 
-Templates helps the view to generate a response: once the view has the finalized data for the response, it can pass to django the data as a dictionary, and a template. Django renders the template, and sends it as the response.
+Templates are typicallly used to generate a web page: once the view has the  data for the response, it can pass this data with a template to django. Django renders the template, and sends the complete page to the web server.
 
-Templates has some logic, with django templates language, templates tags, and you can add your own tags and filters. It's not always clear where to put the logic: in the template, or in Python. This is a preference issue: sometimes it's easier to add things right in the template, sometimes template logic becomes complicated and it's easier to do it in Python. If some logic, rules or calculation repeats throughout the django app, or requires a lot of parameters and lines of code, better to put in Python.
+**Logic**: Templates have some logic, with the django templates language and templates tags. You can add your own tags and filters.It's not always clear where to put the logic: in the template? or in Python, in views, forms, models?    
+This is mainly a developer preference issue: sometimes it's easier to add things right in the template, sometimes the template logic becomes complicated and it's easier to implement it in Python. As a rule of thumb, if some logic, rules or calculation repeat throughout the django app, or require a lot of parameters, better to implment in Python, and pass the results to the template in the context dictionary.
 
-The common pattern is to define a base template, the general structure of the page , the refernces, and then extend this template, so that each template defines just the specific function the view uses - the rest comes from the base template. If the application uses login and public areas, defince a base template for login pages, and another one for public pages. Both can extend the global base template.
+**Hierarchy:** The common pattern is to define a base template, with the general structure of the page, the refernces to the external libraries (jQuery etc), and then extend the  base template to other templates. Each template defines just the specific blocks it needs to change or add to the base template. All the other features come from the base template. 
 
 ## URL Resolvers
 Django maps each url to a specific view. By resolving a url django can find the correct view by a url, and also the opposite: create a url for a given view, with reverse. 
