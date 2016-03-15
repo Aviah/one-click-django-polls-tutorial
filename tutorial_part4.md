@@ -5,9 +5,9 @@ Make sure you finished [Part 3](tutorial_part3.md)
 
 **Quick reminder**: 
 
-In parts 1-3 you have created the polls app, added initial data with the admin, and the urls & views required to browse the polls app from a browser.
+In parts 1-3 you created the polls app, added initial data with the admin, and the urls & views required to browse the polls app from a browser.
 
-In this part, you will deploy the work you have done so far, and see how it looks on a real website.
+In this part, you will deploy, and see how it works on a real website.
 
 ## Test Localy with Apache/Nginx
 
@@ -107,7 +107,7 @@ Status:
 	#
 	nothing to commit (working directory clean)
 	
-After the merge, the local repository is ahead of the main project repository.
+After the merge, the local repository is ahead of the main project repository.    
 Push the updates:
 
 	you@dev-machine: git push
@@ -122,6 +122,8 @@ Push the updates:
 		
 	
 The main repository is up to date.
+
+Reminder: the production website uses a separate repository, so the push to the main repo does not affect the website, it only saves the progress of your work.
 
 **Interim summary:**
 
@@ -173,7 +175,7 @@ The fabric log tells us that:
 3. The `settings_production.py` was re-copied to site_config
 4. Mod_wsgi should reload the new code, after the `touch wsgi.py`
 
-Reminder: `settings_production.py` is maintained **in the repo**, but the actual file loaded to mod_wsgi is the one in the `site_config` directory, **outside** the repo. So you keep all the settings files in the repo, and use only one of them in each environment. Fabric also keeps the secrets.py file. See the [Project Reference](https://github.com/Aviah/one-click-django-docs)
+Reminder: `settings_production.py` is maintained **in the repo**, but the actual file loaded to mod_wsgi is the one in the `site_config` directory, **outside** the repo. So you keep all the settings files in the repo, and use only one of them in each environment. Fabric also keeps the secrets.py file. See the project reference: [Production & Development Settings](https://github.com/Aviah/one-click-django-docs/blob/master/project_ref.md#production--development-settings).
 
 Deployment seems to work. Time to check the website. 
 Go to the website with your browser, at yourdomain.com.   
@@ -203,7 +205,7 @@ You should now see the tail of the following logs:
 4. The Nginx error log
 
 
-*Note: tail-logs will only work if you ssh with your user, because it requires sudo to Atpache and Nginx error logs. The django user on the server does not have sudo permissions. For more details about logging see [Coding Reference](https://github.com/Aviah/one-click-django-docs/blob/master/coding_ref.md)*
+*Note: tail-logs will only work if you ssh with your user, because it requires sudo to Apache and Nginx error logs. The django user on the server does not have sudo permissions. For more details about logging see [Coding Reference](https://github.com/Aviah/one-click-django-docs/blob/master/coding_ref.md)*
 
 
 Look closely at `main.log`. There is a line that says:
@@ -213,8 +215,9 @@ Look closely at `main.log`. There is a line that says:
 OK, everything is clear now. The database table for the polls app is missing.    
 We deployed the code - but didn't run migrations!    
 
-Reminder: migrations tell django **how** to apply the models' changes to the database, but we still have to explicitly **run** these migrations. It worked localy, because we applied the migrations file to the local database.    
-On the server, we just pushed the migrations file, but didn't run it. The database is still as it was before we added the polls app.    
+Reminder: migrations tell django **how** to apply the models' changes to the database, but we still have to explicitly **run** these migrations.    
+It worked localy, because we applied the migrations file to the local database. On the server, we just pushed the migrations file, but didn't run it. The database schema is still as it was before we added the polls app.
+    
 The solution is **deployment with migrations**.    
 
 Exit the server, back to the local machine.   
@@ -326,14 +329,14 @@ Obviously there is nothing to see, since there are no questions in the **server'
 Go to the admin, on the server, at `www.yourdomain.com/admin`.    
 Login, and add some questions, similarly to how you entered questions localy.
 
-*Note: use the server django superuser's username & passowrd that you provided when installing one-click-django-server.*
+*Note: use the django superuser's username & passowrd that you provided when installing one-click-django-server.*
 
 After adding a question or two, go to `www.yourdomain.com/polls`.    
 And here are your questions.
 
 Great work!
 
-You deployed a migration, and handled some issues of server troubleshooting.
+You deployed a migration, and handled some issues with server troubleshooting.
 	
 Now that everything works, there must be a way to make these pages look a bit better? a bit more useful?    
 Continue to [Part 5: Templates](tutorial_part5.md)
