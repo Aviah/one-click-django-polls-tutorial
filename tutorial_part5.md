@@ -24,9 +24,9 @@ Your job, as a django developer, is mostly to write views, and hook them to URLs
 
 Generaly, there are two types of views:
 
-1. **Views that generate a complete web page**: The view function generates a complete web page, with HTML and everything. When django calls it, the view is responsibile to create the **web page & with the data**.
+1. **Views that generates a complete web page**: The view function generates a complete web page, with HTML and everything. When django calls it, the view is responsibile to create the **web page with the data**.
 
-2. **Views that return only data**: The view does **not** need to render a page, it just returns some data. The client is responsible for the rendering. A mobile app needs just the data, and then the app already knows how to render the GUI. Same idea for a rich-client web application, where the client gets the data, typically via AJAX, and uses the client-side javascript to render the page.
+2. **Views that returns only data**: The view does **not** need to render a page, it just returns some data. The client is responsible for the rendering. A mobile app needs just the data, and then the app already knows how to render the GUI. Same idea for a rich-client web application, where the client gets the data, typically via AJAX, and uses the client-side javascript to render the page.
 
 
 Both types of views typically involve some backend processing. But once this processing is done, the "data-only view" finishes. It returns the data as-is to django.    
@@ -47,7 +47,7 @@ Step| View that generates a complete page | View that responds with data
 7|Return the complete page|
 
 
-Fortunately for the page generating views (and the developers that write them), django has **templates**. Once the data dictionary is ready (step 4), it's easy: Just pass it to django with a template of an HTML page. Django will render the template, prepare the complete web page, and send it back to the web server.
+Fortunately for views that generate pages (and the developers that write them), django has **templates**. Once the data dictionary is ready (step 4), it's easy: Just pass this dictionary to django with a template of the HTML page. Django will render the template, prepare the complete web page, and send it back to the web server.
 
 ## Render a Templates in Django
 
@@ -61,19 +61,19 @@ Most of the views that render pages are built like this:
 		# get the data by doing something smart
 		# pack the data into a python dictionary, say Dcontext
 
-		return render(request,'templatefile.html, Dcontext)
+		return render(request,'template_file.html, Dcontext)
 	
 	
 		
-This tells django to render the `templatefile.html` with the data from `Dcontext`, and send the (rendered) complete page to the web server.
+This tells django to render the `template_file.html` with the data from `Dcontext`, and send the (rendered) complete page to the web server.
 
 *Note: You can also define a django view as a class. See part 7 of this tutorial, about class based views (CBV). Both function views and class based views render templates in a similar way, with the same django templates engine*
 
 What is `render`?
 
-It's a django provided function that means: **"Replace a placeholder in the template with actual data from a dictionary, by key".**   
+It's a django function that means: **"Replace a placeholder in the template with actual data from a dictionary, by key".**   
 
-If the `templatefile.html` has a line like this :
+If the `template_file.html` has a line like this :
 
 	<h1> {{ title }} </h1> 
 	
@@ -84,12 +84,13 @@ And the Dictionary `Dcontext` has a `"title"` key like this:
 Then django's `render` replaces the `{{ title }}` placeholder in the template with the value of `Dcontext['title']`. The final HTML is:
 
 	<h1> Hello World!!! </h1> 
-
+	
+*Note: The `render` function actually runs the entire django templates engine, with the django templates language*
 
 ## Adding Templates 
 
 First checkout the polls-app branch.    
-Reminder: master should be used only for the stable code, that is ready for deployment.
+Reminder: the master branch should be used only for the stable code, the code that is ready for deployment.
 
 From the `site_repo` dir:
 
@@ -125,16 +126,16 @@ After the edit, the file should look like this:
 	{% endblock body %}
 
 
-### A few hints about this template
+### A few hints about the template
 
 The django templates are smart templates, and django has a **template language**. This language can handle some Python objects, basic flow commands, and you can even write your own templates functions (called template tags).    
 In the above example, the template will iterate with a `for` loop over the `latest_questions_list`, and will add a line for each entry in the list.
 If the list is empty, it will show "No polls are available".
 
-Since a template can handle some **Python objects & attributes**, django can render `{{ question.id }}` with the `id` attribute of the `question` object.
+Since a template can handle some Python objects & attributes, django can render `{{ question.id }}` with the `id` attribute of the `question` object.
 
-The template starts with `extends`. The shared parts of the site are saved in one or more **base templates**, and the rest of the templates **extend** the base.
-With the `extends` tag you don't have to write the complete HTML code again and again. The `base.html` template contains the global features, like a favicon, and these features are inheretied to all the templates that extend the base. No need to re-add these features to all the other templates.    
+The template starts with `extends`. With `extends`, the shared parts of the site are saved in one or more **base templates**, and the rest of the templates **extend** the base.    
+When  `extends` tag you don't have to write the complete HTML code again and again. The `base.html` template contains the global features, like a favicon, and these features are inheretied to all the templates that extend the base. No need to re-add these features to all the other templates.    
 The `block` part, here `{% block body %}`, is designed to replace or add  elements of the base templates that are specific to the current template.    
 
 *Note: Django templates have A LOT of features and options. See the django docs.* 
@@ -165,7 +166,7 @@ After the edit, the file should look like this:
 	
 ### Use the Templates in Views
 
-Now edit the views, to use the templates:
+Edit the views:
 
 	you@dev-machine: nano polls/views
 	
@@ -193,17 +194,17 @@ Both views are now using templates, and both ask django to render the html templ
 ### The views also use the database
 
  
-The **index** view queries for a list of the first 5 questions `[:5]`, sorted decsending, by pub_date `order_by('-pub_date')`.    
+The **index** view queries for a list of the first 5 questions: `[:5]`. The questions are sorted decsending, by the pub_date: `order_by('-pub_date')`.    
 
 This is the common way to query with django: 
 
 1. Use the model `objects` manager, and then the specific criteria.
 2. The `objects` manager gets the "objects" using the criteria. Each "object" is essentially a row of data, but it's also a python object with many addtional methods and attributes (objects typically hold both data and functionality). 
-3. The "objects" that the manager returns are packed in a `QuerySet` object, the Python obejct with the data, that the view can work with.
+3. The "objects" that the manager returns are packed in a `QuerySet` object, the Python data class that the view can work with.
 
-Similarly, the **detail** view uses the `Question` model's `objects` manager, but asks for just one record, by the questions primary key. The method for one record is `.get`, 
+Similarly, the **detail** view uses the `Question` model's `objects` manager, but asks for just one record, by the question's primary key. The method to get a single record is `.get`, 
 
-Check it! Run the django development server (assume you run it from the site_repo dir):
+Check it! Run the django development server (assume you run it from the `site_repo` dir):
 
 	you@dev-machine:  .././manage.py runserver
 	 
@@ -219,9 +220,9 @@ Click on the first question link | The details of this question
 
 ## Remove Hardcoded URLs in Templates
 
-When you develop a web application, it happens that you want to change the urls. But if the URLs are hardcoded in the templates, it can take a lot of time and a lot of mistakes.
+When you develop a web application, it happens that you want to change the urls. But if the urls are hardcoded in the templates, it can take a lot of time and a lot of mistakes.
 
-Django allows to refer to a url by name: whenever you refer to this name, django will pick the correct url for this unique name in the urls.py file.
+Django allows to refer to a url by name: whenever you use the url's name, django picks the correct url by this name.
 
 When you name a url, like "polls:detail", you can later decide to use:
 
@@ -232,8 +233,7 @@ When you name a url, like "polls:detail", you can later decide to use:
 
 And so on. 
     
-The name of the url, **"polls:detail"**, didn't change. Any reference to "polls:detail" will be OK, and you can change the actual url in one place.
-
+The name of the url, **"polls:detail"**, will not change even when you change the url. Any reference to "polls:detail" will be OK, and you can change the actual url in one place.
 
 To add a named url, edit the template:
 
@@ -251,9 +251,10 @@ With this one, which uses the django `url` template tag:
 Check it in the browser, everything should work the same. 
 
 From a coding perspective, it will be much easier to change the URLs later.    
-It's also easier and cleaner way to provide urls throughout your app.
 
-**url namespace:** Note that the `polls:detail` comes from the main `site_repo/urls.py`, where the namespace `polls` is defined, and then the specific name for each url in the app urls file, at `site_repo/polls/urls.py`.
+**It's also an easier and a cleaner way to provide urls throughout your app. Names are less prone to errors, and more readble, than the entire url path**.
+
+**url namespace:** Note that the `polls:detail` name comes from the main `site_repo/urls.py`, where the namespace `polls` is defined, and then the specific name for each url in the app urls file, at `site_repo/polls/urls.py`.
 
 See what has changed:
 
@@ -275,7 +276,7 @@ See what has changed:
 You added the templates, and modified the views.
 
 
-*Note: the polls templates are saved in the main templates directory, in `templates/polls`. Django allows you to save templates in the app directory, it's a matter of the developer preferences and the specific app*
+*Note: the polls templates are saved in the main templates directory, in `templates/polls/`. Django allows you to save templates in the app directory as well. Choosing between a main templates directory or the app directory is a matter of the developer preferences, style, and the specific app.*
 
  
 Commit and push:
@@ -289,19 +290,25 @@ Commit and push:
 
 You had quiet a progress, everything works, so it's a good time to deploy.
 
-Check on local Nginx/Apache. If you didn't stop Nginx/Apache after testing in Part 4, you just have to reload the site.    
+Check the local site with Nginx & Apache. If you didn't stop Nginx & Apache after testing in Part 4, you just have to reload the site.    
 From site_repo:
 	
 	you@dev-machine: touch wsgi.py
-		
-This will tell mod_wsgi to reload the code.
+	
+You can also reload with the alias:
 
-If you do need to restart, on OSX:
+	you@dev-machine: site-reload
+		
+This tells mod_wsgi to reload the code.
+
+If you need to restart the web servers:     
+
+On OSX:
 
 	you@dev-machine-osx: sudo apachectl restart
 	you@dev-machine-osx: sudo nginx
 	
-Ubuntu:
+Ubuntu desktop:
 
 	you@dev-machine-ubuntu: sudo service apache2 restart
 	you@dev-machine-ubuntu: sudo service nginx restart
@@ -310,7 +317,7 @@ Ubuntu:
 Check the local site at `127.0.0.1/polls`
 
 	
-*Note: HTML code changes do not require a mod-wsgi reload, and as soon as the template HTML changes django will pick the new file. This is why new HTML code should be deployed only in sync with a reload of the matching Python code. Otherwise django will use the newer HTML templates, with the older python code. It's not a problem if you changed style or markup, but if the template looks for an argument that is available only in the newer python code version, this may trigger an error. See [Deployment](https://github.com/Aviah/one-click-django-docs/blob/master/deployment.md)*
+*Note: Changes to the templates HTML code do not require a mod-wsgi reload. As soon as the template changes, django picks the new file. This is why new HTML code should be deployed only in sync with a reload of the matching Python code. Otherwise django uses the newer HTML template, with the older python code. It's not a problem if you changed style or markup, but if the template looks for an argument that is available only in the newer python version, this may trigger an error. See [Deployment](https://github.com/Aviah/one-click-django-docs/blob/master/deployment.md)*
 
 Make sure the polls-app status is OK:
 
@@ -324,7 +331,7 @@ Merge to master:
 	you@dev-machine: git checkout master
 	you@dev-machine: git merge polls-app
 
-Should be a simple fast forward:
+It's a fast forward merge:
 
 	you@dev-machine: git log --oneline
 	
@@ -338,7 +345,7 @@ Should be a simple fast forward:
 	00bfc74 init site repository
 	
 	
-Simple deployment, only Python code & HTML:
+Deployment is simple, only Python code & HTML:
 
 	you@dev-machine: fab deploy
 	
@@ -348,9 +355,9 @@ Check it at `www.yourdomain.com/polls`. Should work!
 
 Great Work!
 
-You have added and deployed templates, to render some real web pages.
+You have added and deployed templates, that render some real web pages.
 
-Until now you entered data in the admin, it would be nice to enter data from the website with a common web page form, wouldn't it?
+Until now you entered data in the admin. It would be nice to enter data from the website with a common web-page form.    
 Continue to [Part 6: Forms](tutorial_part6.md)
 
 Support this project with my affiliate link| 
