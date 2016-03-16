@@ -111,8 +111,8 @@ Django maps each url's path to a specific django url. By resolving a url's path,
 
 
 ## Context Processors
-The template rendering engine gets the data from a specific view. This data is python dictionary, the "context".    
-However, you often need some globaly available data, beyond the scope of the view. The Context Processor provides this data, and let you define and provide data dictionaries to all the views and templates.
+The template rendering engine gets the data from a the current view. This data is a python dictionary, the "context". A typical view populates the context dictionary, and then calls `render` with the contxt dictionary and the template name.    
+However, you often need some globaly available data, beyond the scope of the view. The Context Processors provide this data, and let you define and provide global context data dictionaries to all the templates.
 
 ## Django Auth
 Django comes with a full authentication system: register, sign in, reset password, change password. This app includes views, urls and forms. Using it, it's very easy to add users' authentication to a django project, but will probably require some modifications later.
