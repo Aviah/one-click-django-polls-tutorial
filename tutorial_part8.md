@@ -60,7 +60,7 @@ A really useful companion book from the same author: Pro Python.
 [Pro Django](http://www.amazon.com/Pro-Django-Experts-Voice-Development/dp/1430258098/ref=dp_ob_title_bk).    
 [Pro Python](http://www.amazon.com/Pro-Python-J-Burton-Browning-ebook/dp/B00MY0I600/ref=asap_bc?ie=UTF8)
 
-Django in Depth is a 3.5 hours long video by James Bernett at PyCon 2015.     [Django in Depth Video](https://www.youtube.com/watch?v=tkwZ1jG3XgA)
+Django in Depth is a 3.5 hours long video by James Bernett at PyCon 2015.         [Django in Depth Video](https://www.youtube.com/watch?v=tkwZ1jG3XgA)
 
 
 **That's it!** 
