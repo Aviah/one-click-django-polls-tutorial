@@ -1,56 +1,70 @@
-# Django Tutorial Part 8: What Next and Some Resources
+# Django Tutorial Part 8: What's Next and Some Resources
 
-This is the 7th part of using the official django tutorial in the one-click-django environment.    
+This is part 8 of the tutorial.        
 Make sure you finished [Part 7](tutorial_part7.md)
 
 ## Playground & Tutorial Summary
 
-With the project playgorund and the tutorial, parts 1-6, you have:
+With the one-click-django project, playground & tutorial you have:
 
 1. Built a django single server website 
 2. Built the local site for development 
-3. Created the polls django application which includes data, web pages and user's input (in django terms: models, views and forms)
-4. Deployed Python code, HTML, static files (css, javascript), and database schema changes (in django terms: migrations)
+3. Created a working django application: polls
+4. Used models, views, urls, templates, HTML form and the django admin.
+5. Made database schema updates with migrataions
+4. Deployed Python code, HTML code and static files (css, javascript), with fabric
 5. Handled some basic server troubleshooting
-5. Used git to develop new things in experimental branch, merge to master when stable, and deploy.
+5. Used git to develop and deploy a django project.
 
-This is really a nice toolbelt to have!
+This is a really nice toolbelt to have!
 
+### Complete project reference
+For more details about the project layout, files, directories, settings, deployment, media files, logging, coding reference etc, see the [Project reference docs](https://github.com/aviah/one-click-django-docs/)
 
-For more info about this project, see the [Project Docs](readme_docs.md).   
-The docs have a lot of details about the project layout, settings, media files, imports, logging etc. The nice thing is that you can actually explore the real project, the configs, and see how it works. There are also details how to add some advanced features which are required for any professional web application, like https, CDN etc. 
+There are also details how to add some advanced features, which are required for any professional web application, like https, CDN etc. 
 
-## A Few More Suggestions
-
-** The Django docs tutorial**    
-The official django tutorial covers two additional topics that we didn't cover here: class based views, and testing. The django tutorial also has more details, specificaly about "what not to do". So it's a good idea to check it.
-
-** The Django docs **    
-The django official documentation is simply awesome, covers everything in plain and simple language, with a lot of details and examples. 
+To see a complete website that is built with the one-click-django layout see the [django-website](https://github.com/Aviah/django-website) repository.
 
 
-** Additional Tutorial**    
-Kenneth Love has an incredible 3.5 hours long video tutorial from PyCon 2014, see the [video](https://www.youtube.com/watch?v=KZHXjGP71kQ)
 
-** Book **    
-Two scoops of django, by Daniel & Audrey Roy Greenfeld.  It's a great book, that covers many issues. This is not a step by step or in depth text, but rather a lot of hints, tips and best practices how to make a better django project. The book is available [here](https://www.twoscoopspress.com/products/two-scoops-of-django-1-8)
+## Additional Resources
 
+**The Official Django Polls Tutorial**    
+Covers two additional topics: class based views, and testing. The django tutorial also has more details about "what not to do".    
+[Django polls tutorial](https://docs.djangoproject.com/en/1.9/intro/tutorial01/)
 
-**More Resources **
-
-There are of course many useful and great resources for Django and Python on the web. A notable and comprehensive place to start is [Full Stack Python](http://www.fullstackpython.com/).
-
-Also, any of the DjangoCon videos, always online for free, is a a great place to catch up an issue, or to know the things you don't know that you don't know.
-
-**Advanced**
-
-The Pro Django book by Marty Alchin, the 2nd edition is from 2013. The book is about the core architecture of django, so it's absolutly insightful and relevant.  Gives a good insight to the "zen" of django's, and the fundemental design decisions of the framework. Available [here](http://www.amazon.com/Pro-Django-Experts-Voice-Development/dp/1430258098/ref=dp_ob_title_bk).    
-A really useful "companion" book from the same author, Pro Python, available [here](http://www.amazon.com/Pro-Python-J-Burton-Browning-ebook/dp/B00MY0I600/ref=asap_bc?ie=UTF8)
-
-"Django in Depth", a 3.5 hours long video by James Bernett at PyCon 2015, see the [video](https://www.youtube.com/watch?v=tkwZ1jG3XgA)
+**The Django docs**    
+The django documentation is simply awesome. It covers everything in plain and simple language, with a lot of details and examples.    
+[Django Documentation](#https://docs.djangoproject.com/en/1.9/)
 
 
-**That's it!** Now build that awesome web application.    
+** Additional Tutorial with in-depth CBV**    
+Kenneth Love has an incredible 3.5 hours long video tutorial from PyCon 2014. It's focus is class based views, and the best resources to dive into class based views.The tutorial also has a full documentation with the code examples.    
+[Kenneth Love's Django Tutorial Video](https://www.youtube.com/watch?v=KZHXjGP71kQ)    
+[Kenneth Love's Django Tutorial Documentation](http://gswd-a-crash-course-pycon-2014.readthedocs.org/en/latest/)
+
+**Book**    
+Two scoops of django, by Daniel & Audrey Roy Greenfeld.   
+It's a great book, that covers many issues. This is not a step by step or in-depth text, but rather a lot of hints, tips and best practices about how to make a better django project.    
+[Two Scoops of Django](https://www.twoscoopspress.com/products/two-scoops-of-django-1-8)
+
+
+**Web Resources**    
+There are of course many useful and great resources for Django and Python on the web.   
+A notable and comprehensive place to start is [Full Stack Python](http://www.fullstackpython.com/).    
+Also, any of the DjangoCon videos, always online for free, is a a great place to catch up a topic, or to know the things you don't know that you don't know.
+
+**Advanced**    
+Pro Django, by Marty Alchin. The 2nd edition is from 2013.    
+The book covers the core django's architecture, so it's absolutly insightful and relevant. Gives a good insight to the "zen" of django's, and the fundemental design decisions of the framework. A really useful companion book from the same author: Pro Python.    
+[Pro Django](http://www.amazon.com/Pro-Django-Experts-Voice-Development/dp/1430258098/ref=dp_ob_title_bk).    
+[Pro Python](http://www.amazon.com/Pro-Python-J-Burton-Browning-ebook/dp/B00MY0I600/ref=asap_bc?ie=UTF8)
+
+Django in Depth is a 3.5 hours long video by James Bernett at PyCon 2015.     [Django in Depth Video](https://www.youtube.com/watch?v=tkwZ1jG3XgA)
+
+
+**That's it!** 
+**Now build that awesome web application.**   
 **Good luck!**
 
 
