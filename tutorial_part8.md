@@ -34,11 +34,11 @@ Covers two additional topics: class based views, and testing. The django tutoria
 
 **The Django docs**    
 The django documentation is simply awesome. It covers everything in plain and simple language, with a lot of details and examples.    
-[Django Documentation](#https://docs.djangoproject.com/en/1.9/)
+[Django Documentation](https://docs.djangoproject.com/en/1.9/)
 
 
 **Tutorial with in-depth CBV**    
-Kenneth Love has an incredible 3.5 hours long video tutorial from PyCon 2014. It's focus is class based views, and the best resources to dive into class based views.The tutorial includes a full documentation with the code examples.    
+Kenneth Love has an incredible 3.5 hours long video tutorial from PyCon 2014. It's focus is class based views, and the best resource to dive into class based views.The tutorial includes full documentation with the code.    
 [Kenneth Love's Django Tutorial Video](https://www.youtube.com/watch?v=KZHXjGP71kQ)    
 [Kenneth Love's Django Tutorial Documentation](http://gswd-a-crash-course-pycon-2014.readthedocs.org/en/latest/)
 
