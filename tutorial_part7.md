@@ -62,7 +62,7 @@ The confusing issue with `Queryset` is that a queryset object has more than one 
 * Without data: When you define a queryset, it has only the criteria for the SQL query, like `objects.filter(field1='foo',field2='baz)`. The queryset is defined, but has no data - yet. 
 * With data: After django runs the underlying SQL query and populate query, it has the data. 
 
-Django will not run the query to the database until it actually needs it. Only when the application code starts to reference items of the `Queryset`, e.g. to loop the results or access the first item, django runs the SQL and gets the results, and populates the `Queryset`. When used incorrectly, the same queryset may run more than once. 
+Django will not run the query to the database until it actually needs it. Only when the application code starts to reference items of the `Queryset`, e.g. to loop the results or access the first item, django runs the SQL, gets the results from the database, and populates the `Queryset`. When used incorrectly, the same queryset may run more than once. 
 
 ## Views
 
@@ -72,7 +72,7 @@ Views are the core component of django: The framework's main job is to get the r
 As a django developer, the development work is actually writing views: figure out what is the required response for each url, and write the correct view to provide this response.
 
 **Class Based Views (CBV)**    
-Django earlier versions used functions as views: the view function received the request as an argument, possibly with more arguments, and returned an 'HttpResponse'. Simple and stright forward.    
+Django earlier versions used functions as views: the view function received the request as an argument, possibly with more arguments, and returned an `HttpResponse`. Simple and straightforward.    
 
 Later, django introduced Class Based Views. Like many other django components, it's now possible to define a view by subclassing a django core class.   
 
@@ -86,8 +86,8 @@ However, again, CBV are great to get a fast development progeress, and a much si
    
 So CBV are somewhere between an amazing toolbelt on the one hand, that let's you code these tedious repeating tasks in just a few lines of code (not unlike how django saves you the time of dealing with HTTP), or - on the other extreme - yet another insane [complex objects architecture](http://www.joelonsoftware.com/articles/fog0000000018.html).
 
-At the end of the day, the CBV issue is the old OOP issue, applied to views. OOP has a lot of  pros, but also cons, and it's best to know both CBV and function based views, and choose what fits for your personal programming style, the project, and the specific view at hand.    
-In a way, class based views are a better fit to django's general concept of exposing the core components as classes (models, forms, handlers, etc), and let you subclass and customize what you need.
+At the end of the day, the CBV issue is similar to the old OOP issue, applied to views. OOP has a lot of  pros, but also cons, and it's best to know both CBV and function based views, and choose what fits for your personal programming style, the project, and the specific view at hand.    
+In a way, class based views are a better fit to django's general concept of exposing the framework's core components as classes (models, forms, handlers, etc), and then let the developer subclass and customize.
 
 Important to read:     
 [The django docs about class based views](https://docs.djangoproject.com/en/1.8/topics/class-based-views/intro/)      
@@ -100,13 +100,14 @@ Important to read:
 
 Templates are typicallly used to generate a web page: once the view has the  data for the response, it can pass this data with a template to django. Django renders the template, and sends the complete page to the web server.
 
-**Logic**: Templates have some logic, with the django templates language and templates tags. You can add your own tags and filters.It's not always clear where to put the logic: in the template? or in Python, in views, forms, models?    
-This is mainly a developer preference issue: sometimes it's easier to add things right in the template, sometimes the template logic becomes complicated and it's easier to implement it in Python. As a rule of thumb, if some logic, rules or calculation repeat throughout the django app, or require a lot of parameters, better to implment in Python, and pass the results to the template in the context dictionary.
+**Logic**: Templates have some logic, with the django templates language and templates tags, and templates can also handle some Python objects. You can even add your own tags and filters.   
+It's not always clear where to put the logic: in the template? or in Python, in views, forms, models? This is mainly a developer preference issue: sometimes it's easier to add things right in the template, sometimes the template logic becomes complicated and it's easier to implement it in Python.    
+As a rule of thumb, if some logic, rules or calculation repeat throughout the django app, or require a lot of parameters, better to implment it in Python, and pass the results to the template in the context dictionary.
 
-**Hierarchy:** The common pattern is to define a base template, with the general structure of the page, the refernces to the external libraries (jQuery etc), and then extend the  base template to other templates. Each template defines just the specific blocks it needs to change or add to the base template. All the other features come from the base template. 
+**Hierarchy:** The common pattern is to define a base template, with the general structure of the page and the globaly available features, with the references to the external libraries (jQuery etc). Then extend the  base template to other templates. Each template defines just the specific blocks it needs to change or add to in the base template. All the other features come from the base template as is.
 
 ## URL Resolvers
-Django maps each url to a specific view. By resolving a url django can find the correct view by a url, and also the opposite: create a url for a given view, with reverse. 
+Django maps each url to a specific view. By resolving a url django can find the correct view by a url, and also the opposite: create a url for a given view, with `reverse` in python, or a `url` tag in forms.
 
 
 ## Context Processors
