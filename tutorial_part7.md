@@ -55,12 +55,12 @@ If a django `Model` is the django abstraction to a database table, then the `Que
 
 A `Queryset` is a list-like python class, with a list of rows that the database returned for a given query criteria. However, in django, you get an "object" that is much more than a "row". A queryset item is typically a complete python object with both data and functionality. 
 
-Like any other python list (it's not a real list, but similar to one), you can loop through the queryset and use list comprehentions. 
+Like any other python list (it's not a real list, but similar to one), you can loop through the queryset and use list comprehensions. 
 
 The confusing issue with `Queryset` is that a queryset object has more than one state: 
 
 * Without data: When you define a queryset, it has only the criteria for the SQL query, like `objects.filter(field1='foo',field2='baz)`. The queryset is defined, but has no data - yet. 
-* With data: After django runs the underlying SQL query and populate query, it has the data. 
+* With data: After django runs the underlying SQL query and populates the queryset. 
 
 Django will not run the query to the database until it actually needs it. Only when the application code starts to reference items of the `Queryset`, e.g. to loop the results or access the first item, django runs the SQL, gets the results from the database, and populates the `Queryset`. When used incorrectly, the same queryset may run more than once. 
 
@@ -68,7 +68,7 @@ Django will not run the query to the database until it actually needs it. Only w
 
 A view is a python function, or class, that gets an HTTP request, do something with it, and then sends back a response.    
 
-Views are the core component of django: The framework's main job is to get the request from the web server, send it to the correct view, and then get the view result - the response - and send it back to the web server.
+Views are the core component of django. The framework's main job is to get the request from the web server, pass it to the correct view, and then get the view result - the response - and send it back to the web server.
 As a django developer, the development work is actually writing views: figure out what is the required response for each url, and write the correct view to provide this response.
 
 **Class Based Views (CBV)**    
@@ -76,7 +76,7 @@ Django earlier versions used functions as views: the view function received the 
 
 Later, django introduced Class Based Views. Like many other django components, it's now possible to define a view by subclassing a django core class.   
 
-With CBV, django also introduced **generic views**, a set of base classes that already do what most common web application views need: add a new item, delete item, edit an item, render a template, redirect, etc. 
+With CBV, django also introduced **generic views**, a set of base classes that already do what most common web application views need: add a new item, delete an item, edit an item, render a template, redirect, etc. 
 
 The CBV - and the generic views -  are great when you need the very common use cases (e.g.  show a simple list of items). But once you need some not-so-obvious functionality, it becomes incredibly complicated to use the correct subclass, mixins, methods and properties. To get an idea, see the [complete CBV reference](https://ccbv.co.uk/).
 
@@ -100,35 +100,40 @@ Important to read:
 
 Templates are typicallly used to generate a web page: once the view has the  data for the response, it can pass this data with a template to django. Django renders the template, and sends the complete page to the web server.
 
-**Logic**: Templates have some logic, with the django templates language and templates tags, and templates can also handle some Python objects. You can even add your own tags and filters.   
-It's not always clear where to put the logic: in the template? or in Python, in views, forms, models? This is mainly a developer preference issue: sometimes it's easier to add things right in the template, sometimes the template logic becomes complicated and it's easier to implement it in Python.    
+**Logic**: Templates have some logic, with the django templates language and templates tags. The django templates can also handle some Python objects. You can add your own tags and filters.   
+It's not always clear where to put the logic: in the template? or in Python - in views, forms, models? This is mainly a developer preference issue: sometimes it's easier to add things right in the template, sometimes the template logic becomes complicated and it's easier to implement it in Python.    
 As a rule of thumb, if some logic, rules or calculation repeat throughout the django app, or require a lot of parameters, better to implment it in Python, and pass the results to the template in the context dictionary.
 
-**Hierarchy:** The common pattern is to define a base template, with the general structure of the page and the globaly available features, with the references to the external libraries (jQuery etc). Then extend the  base template to other templates. Each template defines just the specific blocks it needs to change or add to in the base template. All the other features come from the base template as is.
+**Hierarchy:** The common pattern is to define a base template. This template has the general structure of the page, and the globaly available features with the global references to external resourxes (css, favicon, logo, jQuery etc). The other templates extend the base. Each template defines just the specific blocks it needs to change or add. All the other features come from the base template as is.
 
 ## URL Resolvers
-Django maps each url to a specific view. By resolving a url django can find the correct view by a url, and also the opposite: create a url for a given view, with `reverse` in python, or a `url` tag in forms.
+Django maps each url's path to a specific django url. By resolving a url's path, django can find the correct view for each request in the project's urls modules. Django also finds the opposite: create a url path for a given url name, with `reverse` in python, or a `url` tag in templates.
 
 
 ## Context Processors
-The template rendering engine gets the data from a specific view, but often you need some globaly available data that is used everywhere. Context Processor provide this data, and let you define data dictionaries once, and then use it in all templates, and all the views.
+The template rendering engine gets the data from a specific view. This data is python dictionary, the "context".    
+However, you often need some globaly available data, beyond the scope of the view. The Context Processor provides this data, and let you define and provide data dictionaries to all the views and templates.
 
 ## Django Auth
-Django comes with a full authentication system: register, sign in, reset password, change password. This component includes views, urls and forms. Very easy to have a user login authentication fast, but probably requires some modifications later.
-The core model used by django is the User model.
+Django comes with a full authentication system: register, sign in, reset password, change password. This app includes views, urls and forms. Using it, it's very easy to add users' authentication to a django project, but will probably require some modifications later.
+
 
 ## Middleware
-Python classes that django calls before the request gets to the view, and after the view return the response. Usefull for code that should run, well, before the view starts or after it finishes. Typically for site global functionality.
+Middleware is a Python class that django calls before the request gets to the view, and after the view returns the response. It's usefull for code that should run, well, before the view starts or after it finishes. Typically for the site global functionality.
 
 
 ## Signals
-Signals, like middleware, provide site-global functionality. However, middleware is always called, and alwats runs, for every request. A signal is a conditional call that runs only "when something happens", and you define what this "something" is.  The signal calls another function, which may not be related to the specific view and request at hand.    
-When used for models and data, signals provide functionality that is similar to a database trigger. 
+Signals, like middleware, provide a site-global functionality. 
+
+However, the middleware is called **always**, and runs for **every** request. A signal is a conditional call, that runs only "when something happens". The django developer defines what this "something" is.
+
+The signal can call any function, which may not be related to the specific view and request at hand. When used for models and data, signals provide functionality that is similar to a database trigger. 
 
 ## Cache
-Django has a cache framework that lets you cache anything from specific data items to entire rendered pages. For storage, as usual, django provides common backends, and you can customize your own. The simplest cache is the file system: django will store the cached data as files, and there is nothing to install. You just have to tell django what directory to use for the cache.
+Django has a cache framework that lets you cache anything, from specific data items to entire rendered pages. For storage, as usual, django provides common backends, and you can also customize your own.    
+The simplest cache is the file system: django will store the cached data as files (no need to install a caching backend). You just have to tell django in what directory to use for the cache, and set the correct write permissions for that directory.
 
-Django  works great, out-of-the-box, without caching. A decent webserver and database will do. As you scale, or need some repeating expensive queries or rendering, cache is useful.
+Django  works great, out-of-the-box, without caching. A decent webserver and database will do. As you scale, or need some repeating expensive queries, or pages that takes a lot of time to render, cache becomes useful.
 
  
 ## More Components & Customize Django
