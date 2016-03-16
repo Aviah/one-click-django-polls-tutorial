@@ -138,10 +138,10 @@ Django works great, out-of-the-box, without caching. A decent webserver and the 
 
  
 ## More Components & Customize Django
-Django has many other components, and the idea is usually the same: the django developer can use the out-of-the-box django class, or subclass it and customize what is needed.
+Django has many other components, but the idea is usually the same: the django developer can use the out-of-the-box django class, or subclass it and customize what is needed.
 
 This is the final step of the tutorial.    
-Now build an awesome web application, and dive into advanced advanced in-depth resources!
+Now build an awesome web application, and dive into advanced in-depth resources!    
 Continue to: [Part 8: What's Next and Advanced Resources](tutorial_part8.md)
 
 Support this project with my affiliate link| 
