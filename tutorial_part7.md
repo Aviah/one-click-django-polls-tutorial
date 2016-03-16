@@ -111,7 +111,7 @@ Django maps each url's path to a specific django url. By resolving a url's path,
 
 
 ## Context Processors
-The template rendering engine gets the data from a the current view. This data is a python dictionary, the "context". A typical view populates the context dictionary, and then calls `render` with the contxt dictionary and the template name.    
+The template rendering engine gets the data from the current view. This data is a python dictionary, the "context". A typical view populates the context dictionary, and then calls `render` with the contxt dictionary and the template name.    
 However, you often need some globaly available data, beyond the scope of the view. The Context Processors provide this data, and let you define and provide global context data dictionaries to all the templates.
 
 ## Django Auth
@@ -125,15 +125,16 @@ Middleware is a Python class that django calls before the request gets to the vi
 ## Signals
 Signals, like middleware, provide a site-global functionality. 
 
-However, the middleware is called **always**, and runs for **every** request. A signal is a conditional call, that runs only "when something happens". The django developer defines what this "something" is.
+However, the middleware is called **always**, and runs for **every** request. A signal is a conditional call, that runs only "when something happens". The django developer defines what this "something" is.    
+The signal can call any function, which may not be related to the specific view and request at hand. 
 
-The signal can call any function, which may not be related to the specific view and request at hand. When used for models and data, signals provide functionality that is similar to a database trigger. 
+When used for models and data, signals provide functionality that is similar to a database trigger. 
 
 ## Cache
 Django has a cache framework that lets you cache anything, from specific data items to entire rendered pages. For storage, as usual, django provides common backends, and you can also customize your own.    
-The simplest cache is the file system: django will store the cached data as files (no need to install a caching backend). You just have to tell django in what directory to use for the cache, and set the correct write permissions for that directory.
+The simplest cache is the file system: django will store the cached data as files (no need to install a caching backend). You just have to tell django what directory to use, and set the correct rread & write permissions for this directory.
 
-Django  works great, out-of-the-box, without caching. A decent webserver and database will do. As you scale, or need some repeating expensive queries, or pages that takes a lot of time to render, cache becomes useful.
+Django works great, out-of-the-box, without caching. A decent webserver and the database will do. As you scale, have more traffic, or need some repeating expensive queries, or pages that takes a lot of time to render, cache becomes useful.
 
  
 ## More Components & Customize Django
