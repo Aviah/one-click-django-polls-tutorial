@@ -3,7 +3,7 @@
 This is part 6 of the tutorial.    
 Make sure you finished [Part 5](tutorial_part5.md)
 
-**Quick reminder**: 
+**Quick Reminder**: 
 
 In parts 1-5 you created and deployed the polls app, which now runs several web pages, with models, views and templates. You also entered initial data with the django admin.
 
@@ -202,7 +202,7 @@ Commit and Push:
 # Deployment
 
 
-Reload the site and test localy with Nginx & Apache:
+Reload the site and test locally with Nginx & Apache:
 
 	you@dev-machine: touch wsgi.py
 	

@@ -4,7 +4,7 @@
 This is the 2nd part of the tutorial.    
 Make sure you finished [Part 1: Create the Polls App](tutorial_part1.md)
 
-**Quick reminder**: 
+**Quick Reminder**: 
 
 In part 1:
 

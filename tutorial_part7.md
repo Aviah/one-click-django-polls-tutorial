@@ -4,7 +4,7 @@ This is part 7 of the tutorial.
 Make sure you finished [Part 6](tutorial_part6.md)
 
 
-**Quick reminder**: 
+**Quick Reminder**: 
 
 In parts 1-6 you created and deployed the polls app.
 

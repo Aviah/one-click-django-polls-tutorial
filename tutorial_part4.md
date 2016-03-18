@@ -3,13 +3,13 @@
 This is part 4 of the tutorial.    
 Make sure you finished [Part 3](tutorial_part3.md)
 
-**Quick reminder**: 
+**Quick Reminder**: 
 
 In parts 1-3 you created the polls app, added initial data with the admin, and the urls & views required to browse the polls app from a browser.
 
 In this part, you will deploy, and see how it works on a real website.
 
-## Test Localy with Apache/Nginx
+## Test Locally with Apache/Nginx
 
 So far we have tested the site with django development server. It's a great and easy way to work on the site when you code, but before deployment, you want to test that everything works on Apache/Nginx.
 
@@ -127,7 +127,7 @@ Reminder: the production website uses a separate repository, so the push to the 
 
 **Interim summary:**
 
-1. The polls app is working localy both on the django development server, and the local Nginx/Apache. 
+1. The polls app is working locally both on the django development server, and the local Nginx/Apache. 
 2. The polls-app branch was merged to master
 3. The main project repository is up to date
 
@@ -182,7 +182,7 @@ Go to the website with your browser, at yourdomain.com.
 Browse to the new polls app, at `www.yourdomain.com/polls`
 
 Ooops! 500 Serrver Error?    
-That's annoying. Everything worked perfectly well localy!    
+That's annoying. Everything worked perfectly well locally!    
 What happened?
 
 
@@ -216,7 +216,7 @@ OK, everything is clear now. The database table for the polls app is missing.
 We deployed the code - but didn't run migrations!    
 
 Reminder: migrations tell django **how** to apply the models' changes to the database, but we still have to explicitly **run** these migrations.    
-It worked localy, because we applied the migrations file to the local database. On the server, we just pushed the migrations file, but didn't run it. The database schema **on the server** is still as it was before we added the polls app.
+It worked locally, because we applied the migrations file to the local database. On the server, we just pushed the migrations file, but didn't run it. The database schema **on the server** is still as it was before we added the polls app.
     
 The solution is **deployment with migrations**.    
 
@@ -326,7 +326,7 @@ But there is nothing else either.
    
 Obviously there is nothing to see, since there are no questions in the **server's** database - yet.   
 Go to the admin, on the server, at `www.yourdomain.com/admin`.    
-Login, and add some questions, similarly to how you entered questions localy.
+Login, and add some questions, similarly to how you entered questions locally.
 
 *Note: use the django superuser's username & passowrd that you provided when installing one-click-django-server.*
 

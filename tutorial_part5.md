@@ -3,7 +3,7 @@
 This is part 5 of the tutorial.    
 Make sure you finished [Part 4](tutorial_part4.md)
 
-**Quick reminder**: 
+**Quick Reminder**: 
 
 In parts 1-4 you created the polls app and deployed it to the production website, with migrations and initial data.
 

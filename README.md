@@ -14,7 +14,7 @@ To run this tutorial, you will need the one-click-django-server and the matching
 * Develop & Deploy:  on [OSX El-Capitan](https://github.com/Aviah/one-click-django-dev-osx-el-capitan), or [Ubuntu 14.04 Trusty desktop](https://github.com/Aviah/one-click-django-dev-ubuntu-14-04-trusty)
 
 
-*A note about the IDE: This is obviously a personal choice, what you feel that works for you. If you haven't selected an IDE yet, I recommend Wing IDE Pro which I use for years. It has the "Python Zen", just fits to the Python programmer, integrates with django, git, excellent debugging and great support* 
+*A note about the IDE: This is obviously a personal choice, what you feel that works for you. If you haven't selected an IDE yet, I recommend Wing IDE Pro which I use for years. It has the "Python Zen", just fits to the Python programmer, with django integration, git integration, excellent debugging and great support* 
 
 
 

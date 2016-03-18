@@ -3,7 +3,7 @@
 This is the 3rd part of the tutorial.    
 Make sure you finished [Part 2](tutorial_part2.md)
 
-**Quick reminder**: 
+**Quick Reminder**: 
 
 In parts 1 & 2 you created the polls app, added models and database migrations, and used the admin to add some initial data.
 
@@ -68,7 +68,7 @@ This flow is the nice thing in a web framework, and django in particular:  Your 
 *Note: When the client asks for a real file (image, css file, javascript file), Nginx does not need to go to Apache and mod_wsgi. Rather, Nginx  sends the file directly.*  
 
 Why Apache and Nginx? Once Apache handles the response to Nginx, the Apache-mod-wsgi-django thread is free to run another request. When Nginx gets the response (that django prepared), it  takes care to send it to the client.    
-The heavy lifting is the code that runs in django: The idea is to free the Apache-mod-wsgi resources ASAP. After django finishes with the request, Apache delivers it to Nginx **localy** and is immediately ready for the next request. Nginx will now handle the delivery over the internet, with the waits, slow connections, disconnections etc. Meanwhile, Apache-mod-wsgi-django can run another request.
+The heavy lifting is the code that runs in django: The idea is to free the Apache-mod-wsgi resources ASAP. After django finishes with the request, Apache delivers it to Nginx **locally** and is immediately ready for the next request. Nginx will now handle the delivery over the internet, with the waits, slow connections, disconnections etc. Meanwhile, Apache-mod-wsgi-django can run another request.
  
 
 
