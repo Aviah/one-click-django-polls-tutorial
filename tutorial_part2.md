@@ -45,8 +45,9 @@ Run the django development server:
 
 	you@dev-machine: .././manage.py runserver
 	
+*Note: If you run this tutorial on Safari, it's recommended to use the full url address (Safari preferences >> advanced >> show full website address)*
 	
-And browse to the admin site, at `127.0.0.1:8000/admin`.
+Browse to the admin site, at `127.0.0.1:8000/admin`.
 The admin login page should appear: 
 
 1. login with the site-root username & password. You provided these credetials when you installed the one-click-django-dev.
